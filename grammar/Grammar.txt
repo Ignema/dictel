@@ -1,0 +1,70 @@
+add(main, () =>
+{
+  log("hello")
+	add(x,1)  
+        add(y,1)
+	add(z,x+y)
+	log(z)
+	z=3
+}
+)
+
+//////////////////////////////////////////////////
+
+T = {add,acf,aco}
+NT = {S,KEY,VALUE,TYPE }
+Axiome : { S}
+avec :
+acf = '{'
+aco = '}'
+
+# **Some tokens definitions :**
+
+ID ⇒ lettre {lettre | chiffre}
+NUM ⇒ chiffre {chiffre}
+Chiffre ⇒ 0|..|9
+Lettre ⇒ a|b|..|z|A|..|Z
+
+chaine ⇒ {lettre | chiffre | symbole}
+
+# La grammaire P :
+
+S => ADD { ADD }
+ADD => add ( KEY VALUE TYPE STATE ALLOCATE )
+
+VALUE => epsilon
+            => **, NUMBER**
+=> , (PARMS)=>aco INTS acf
+=> **,** ( CONDITION ) ? aco INSTS acf  : aco INSTSacf
+PARMS => epsilon|MOT{,MOT}
+KEY => lettre{lettre|chiffre|symbole}
+
+TYPE  => epsilon | , type= " TYPES "
+STATE => epsilon | , state="immutable|nonNullable|nullable"
+KIND  => epsilon|,kind="if|for|when|struct"
+USE  => epsilon|,use=chiffre*
+RUN  => epsilon|,run="asynchronous|synchronous"	
+ALLOCATE => epsilon|,allocate="chiffre*sizeof(types)"
+
+TYPES => void | char | short | int | long | float | double | signed | unsigned | string
+
+INSTS => INST { INST }
+INST    => WRITE | READ | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN
+
+WRITE  => log( " { chaine aco $ aco ID acf [chaine]  } " | ID )
+READ    => ID = scan()
+BLOCIF  => if ( CONDITION ) aco INSTS acf
+
+              => if ( CONDITION ) ? aco INSTS acf : aco INSTS acf
+AFFEC   => KEY = EXPR
+BLOCFOR ⇒ for (INST , CONDITION , INSTS)
+
+BLOCWHILE ⇒  while ( CONDITION ) aco INSTS acof
+
+CONDITION  => EXPR RELOP EXPR
+RELOP => = | <> | < | > | <= | >=
+EXPR => TERM { ADDOP TERM }
+ADDOP => + | -
+TERM => FACT { MULOP FACT }
+MULOP => * | /
+FACT => ID | NUM | ( EXPR )
