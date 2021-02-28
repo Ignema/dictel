@@ -18,35 +18,36 @@ aco = '}'
 
 S => ADD { ADD }
 ADD => add ( KEY VALUE TYPE STATE ALLOCATE )
-
+----------------------------------------------------------
+KEY => lettre{lettre|chiffre|symbole}
+-----------------------------------------------
 VALUE => epsilon
       => , NUMBER
       => , (PARMS)=>aco INTS acf
       => ,( CONDITION ) ? aco INSTS acf  : aco INSTS acf
 PARMS => epsilon|MOT{,MOT}
-KEY => lettre{lettre|chiffre|symbole}
-
+---------------------------------------------
 TYPE  => epsilon | , type = " TYPES "
 STATE => epsilon | , state = " immutable|nonNullable|nullable "
 KIND  => epsilon | ,kind="if|for|when|struct"
 USE   => epsilon | , use = NUM 
 RUN   => epsilon | , run="asynchronous|synchronous"	
 ALLOCATE => epsilon |, allocate = " chiffre * sizeof ( TYPES ) "
-
+-------------------------------------------------------------------------------------------
 TYPES => void | char | short | int | long | float | double | signed | unsigned | string
-
+---------------------------------------------------------------------------------------
 INSTS => INST { INST }
-INST  => epsilon | WRITE | READ | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN 
-
+INST  => epsilon | WRITE | READ | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN | break
+----------------------------------------------------------
 WRITE  => log( " { chaine aco $ aco ID acf [chaine]  } " | ID )
 READ    => ID = scan()
 BLOCIF  => if ( CONDITION ) aco INSTS acf
 	=> if ( CONDITION ) ? aco INSTS acf : aco INSTS acf
 AFFEC   => KEY = EXPR
-BLOCFOR ⇒ for (INST , CONDITION , INSTS)
+BLOCFOR ⇒ for (AFFEC , CONDITION , INST)
 BLOCWHILE ⇒  while ( CONDITION ) aco INSTS acof
 RETURN => return EXPR 
-
+-----------------------------------------------------------------------------
 CONDITION  => EXPR RELOP EXPR
 RELOP => = | <> | < | > | <= | >=
 EXPR => TERM { ADDOP TERM }
@@ -54,5 +55,5 @@ ADDOP => + | -
 TERM => FACT { MULOP FACT }
 MULOP => * | /
 FACT => ID | NUM | ( EXPR )
-
+----------------------------------------------------------------------
 
