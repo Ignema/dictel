@@ -25,10 +25,11 @@ VALUE => epsilon
       => , EXPR
       => , [ EXPR { , EXPR } ]                                            //array
       => , []
-      => , (PARMS) => aco INTS acf                                       //functions
+      => , (PARMS) => aco INSTS acf                                       //functions and for
       => , ( CONDITION ) ? aco INSTS acf  : aco INSTS acf                 //if
       => , ( AFFEC { , AFFEC} ) => aco ID -> TYPES { ID -> TYPES } acof  //struct
-PARMS => epsilon|MOT{,MOT}
+      => , NUM..NUM                                                      //range
+PARMS => epsilon| ID { , ID }
 ---------------------------------------------
 TYPE  => epsilon | , type = " TYPES {[]} "
 STATE => epsilon | , state = " immutable|nonNullable|nullable "
@@ -40,17 +41,18 @@ ALLOCATE => epsilon |, allocate = " chiffre * sizeof ( TYPES ) "
 TYPES => void | char | short | int | long | float | double | signed | unsigned | string | pipe
 ---------------------------------------------------------------------------------------
 INSTS => INST { INST }
-INST  => epsilon | WRITE | READ | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN | break | WHENINST
+INST  => epsilon | WRITE | READ | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN | break | WHENINST | PARINST
 ----------------------------------------------------------
 WRITE  => log( " { chaine aco $ aco ID acf {chaine}  } " | ID )
 READ    => ID = scan()
 BLOCIF  => if ( CONDITION ) aco INSTS acf
-	=> if ( CONDITION ) ? aco INSTS acf : aco INSTS acf
+	=> CONDITION ? aco INSTS acf : aco INSTS acf
 AFFEC   => KEY = EXPR
 BLOCFOR ⇒ for (AFFEC , CONDITION , INST)
 BLOCWHILE ⇒  while ( CONDITION ) aco INSTS acof
 WHENINST => NUM -> INST 
 RETURN => return EXPR 
+PARINST => params ( ID )
 -----------------------------------------------------------------------------
 CONDITION  => EXPR RELOP EXPR
 RELOP => = | <> | < | > | <= | >=
