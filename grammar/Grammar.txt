@@ -22,30 +22,34 @@ ADD => add ( KEY VALUE TYPE STATE ALLOCATE )
 KEY => lettre{lettre|chiffre|symbole}
 -----------------------------------------------
 VALUE => epsilon
-      => , NUMBER
-      => , (PARMS)=>aco INTS acf
-      => ,( CONDITION ) ? aco INSTS acf  : aco INSTS acf
+      => , EXPR
+      => , [ EXPR { , EXPR } ]                                            //array
+      => , []
+      => , (PARMS) => aco INTS acf                                       //functions
+      => , ( CONDITION ) ? aco INSTS acf  : aco INSTS acf                 //if
+      => , ( AFFEC { , AFFEC} ) => aco ID -> TYPES { ID -> TYPES } acof  //struct
 PARMS => epsilon|MOT{,MOT}
 ---------------------------------------------
-TYPE  => epsilon | , type = " TYPES "
+TYPE  => epsilon | , type = " TYPES {[]} "
 STATE => epsilon | , state = " immutable|nonNullable|nullable "
 KIND  => epsilon | ,kind="if|for|when|struct"
 USE   => epsilon | , use = NUM 
 RUN   => epsilon | , run="asynchronous|synchronous"	
 ALLOCATE => epsilon |, allocate = " chiffre * sizeof ( TYPES ) "
 -------------------------------------------------------------------------------------------
-TYPES => void | char | short | int | long | float | double | signed | unsigned | string
+TYPES => void | char | short | int | long | float | double | signed | unsigned | string | pipe
 ---------------------------------------------------------------------------------------
 INSTS => INST { INST }
-INST  => epsilon | WRITE | READ | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN | break
+INST  => epsilon | WRITE | READ | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN | break | WHENINST
 ----------------------------------------------------------
-WRITE  => log( " { chaine aco $ aco ID acf [chaine]  } " | ID )
+WRITE  => log( " { chaine aco $ aco ID acf {chaine}  } " | ID )
 READ    => ID = scan()
 BLOCIF  => if ( CONDITION ) aco INSTS acf
 	=> if ( CONDITION ) ? aco INSTS acf : aco INSTS acf
 AFFEC   => KEY = EXPR
 BLOCFOR ⇒ for (AFFEC , CONDITION , INST)
 BLOCWHILE ⇒  while ( CONDITION ) aco INSTS acof
+WHENINST => NUM -> INST 
 RETURN => return EXPR 
 -----------------------------------------------------------------------------
 CONDITION  => EXPR RELOP EXPR
