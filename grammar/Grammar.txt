@@ -1,6 +1,5 @@
 
-T = {add,acf,aco}
-NT = {S,KEY,VALUE,TYPE }
+
 Axiome : { S}
 
 # **Some tokens definitions :**
@@ -21,21 +20,24 @@ ADD => add ( KEY VALUE TYPE STATE ALLOCATE )
 ----------------------------------------------------------
 KEY => lettre{lettre|chiffre|symbole}
 -----------------------------------------------
-VALUE => epsilon
-      => , EXPR
-      => , [ EXPR { , EXPR } ]                                            //array
-      => , []
-      => , (PARMS) => aco INSTS acf                                       //functions and for
-      => , ( CONDITION ) ? aco INSTS acf  : aco INSTS acf                 //if
-      => , ( AFFEC { , AFFEC} ) => aco ID -> TYPES { ID -> TYPES } acof  //struct
-      => , NUM..NUM                                                      //range
+VALUE => ,V | epsilon 
+  V =>  EXPR
+      =>  [ EXPR { , EXPR } ]                                            //array
+      =>  []
+      =>  (PARMS) => aco INSTS acf                                       //functions and for
+      =>  ( CONDITION ) ? aco INSTS acf  : aco INSTS acf                 //if
+      =>  ( AFFEC { , AFFEC} ) => aco ID -> TYPES { ID -> TYPES } acof  //struct
+      =>  NUM..NUM                                                      //range
 PARMS => epsilon| ID { , ID }
 ---------------------------------------------
 TYPE  => epsilon | , type = " TYPES {[]} "
-STATE => epsilon | , state = " immutable|nonNullable|nullable "
-KIND  => epsilon | ,kind="if|for|when|struct"
+STATE => epsilon | , state = " S "
+S    => immutable|nonNullable|nullable
+KIND  => epsilon | ,kind=" K "
+K => if|for|when|struct
 USE   => epsilon | , use = NUM 
-RUN   => epsilon | , run="asynchronous|synchronous"	
+RUN   => epsilon | , run=" R "
+R => asynchronous|synchronous	
 ALLOCATE => epsilon |, allocate = " chiffre * sizeof ( TYPES ) "
 -------------------------------------------------------------------------------------------
 TYPES => void | char | short | int | long | float | double | signed | unsigned | string | pipe
