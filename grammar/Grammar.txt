@@ -9,7 +9,6 @@ NUM ⇒ chiffre {chiffre}
 Chiffre ⇒ 0|..|9
 Lettre ⇒ a|b|..|z|A|..|Z
 chaine ⇒ {lettre | chiffre | symbole}
-
 acf = '{'
 aco = '}'
 
@@ -21,13 +20,20 @@ ADD => add ( KEY VALUE TYPE STATE ALLOCATE )
 KEY => lettre{lettre|chiffre|symbole}
 -----------------------------------------------
 VALUE => ,V | epsilon 
-  V =>  EXPR
-      =>  [ EXPR { , EXPR } ]                                            //array
-      =>  []
-      =>  (PARMS) => aco INSTS acf                                       //functions and for
-      =>  ( CONDITION ) ? aco INSTS acf  : aco INSTS acf                 //if
-      =>  ( AFFEC { , AFFEC} ) => aco ID -> TYPES { ID -> TYPES } acof  //struct
-      =>  NUM..NUM                                                      //range
+  V   =>  EXPR
+      => [ARRAY]
+      =>  NUM..NUM            //range                                          
+      => FUNCTION                                        
+      => IFDEF 
+      => FORDEF                
+      => STRUCT 
+
+ARRAY =>  EXPR { , EXPR } | epsilon 
+FUNCTION => (PARMS) => aco INSTS acf 
+IFDEF    => ( CONDITION ) ? aco INSTS acf  : aco INSTS acf  
+FORDEF   => (ID) => aco INSTS acf  
+STRUCT   => ( AFFEC { , AFFEC} ) => aco ID -> TYPES { ID -> TYPES } acof  
+                                                      
 PARMS => epsilon| ID { , ID }
 ---------------------------------------------
 TYPE  => epsilon | , type = " TYPES {[]} "
