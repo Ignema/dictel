@@ -1,5 +1,4 @@
 
-
 Axiome : { S}
 
 # **Some tokens definitions :**
@@ -8,39 +7,37 @@ ID ⇒ lettre {lettre | chiffre}
 NUM ⇒ chiffre {chiffre}
 Chiffre ⇒ 0|..|9
 Lettre ⇒ a|b|..|z|A|..|Z
-chaine ⇒ {lettre | chiffre | symbole}
-acf = '{'
-aco = '}'
+
+aco = '{'
+acf = '}'
 
 # ** La grammaire P **:
 
 S => ADD { ADD }
-ADD => add ( KEY VALUE TYPE STATE ALLOCATE )
+ADD => add ( ID KIND VALUE TYPE STATE ALLOCATE  USE RUN )
 ----------------------------------------------------------
-KEY => lettre{lettre|chiffre|symbole}
------------------------------------------------
-VALUE => ,V | epsilon 
-  V   =>  EXPR
+KIND  => epsilon | ,kind=" K
+K => if", IFDEF |for ", FORDEF |when", SWITCHDEF | struct", STRUCT |function", FUNCTION
+
+FUNCTION => (PARMS) => aco INSTS acf 
+IFDEF    => ( CONDITION ) ? aco INSTS acf  : aco INSTS acf
+FORDEF   => (ID) => aco INSTS acf  
+STRUCT   => ( AFFEC { , AFFEC} ) => aco ID -> TYPES { ID -> TYPES } acof   
+SWITCHDEF => (ID) => aco INSTS acf
+
+VALUE => ,VAL | epsilon 
+  VAL   =>  EXPR
       => [ARRAY]
       =>  NUM..NUM            //range                                          
-      => FUNCTION                                        
-      => IFDEF 
-      => FORDEF                
-      => STRUCT 
-
-ARRAY =>  EXPR { , EXPR } | epsilon 
-FUNCTION => (PARMS) => aco INSTS acf 
-IFDEF    => ( CONDITION ) ? aco INSTS acf  : aco INSTS acf  
-FORDEF   => (ID) => aco INSTS acf  
-STRUCT   => ( AFFEC { , AFFEC} ) => aco ID -> TYPES { ID -> TYPES } acof  
-                                                      
+ 
+ARRAY =>  EXPR { , EXPR } | epsilon                                                      
 PARMS => epsilon| ID { , ID }
+
 ---------------------------------------------
 TYPE  => epsilon | , type = " TYPES {[]} "
 STATE => epsilon | , state = " S "
 S    => immutable|nonNullable|nullable
-KIND  => epsilon | ,kind=" K "
-K => if|for|when|struct
+
 USE   => epsilon | , use = NUM 
 RUN   => epsilon | , run=" R "
 R => asynchronous|synchronous	
@@ -48,14 +45,16 @@ ALLOCATE => epsilon |, allocate = " chiffre * sizeof ( TYPES ) "
 -------------------------------------------------------------------------------------------
 TYPES => void | char | short | int | long | float | double | signed | unsigned | string | pipe
 ---------------------------------------------------------------------------------------
-INSTS => INST { INST }
+INSTS =>  INST { INST } 
 INST  => epsilon | WRITE | READ | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN | break | WHENINST | PARINST
 ----------------------------------------------------------
-WRITE  => log( " { chaine aco $ aco ID acf {chaine}  } " | ID )
-READ    => ID = scan()
+WRITE  => log( " { {ID|symbole|chiffre} aco $ aco ID acf {chaine}  } " | ID )
+
 BLOCIF  => if ( CONDITION ) aco INSTS acf
 	=> CONDITION ? aco INSTS acf : aco INSTS acf
-AFFEC   => KEY = EXPR
+AFFEC   => ID = READ
+READ => EXPR | scan()
+
 BLOCFOR ⇒ for (AFFEC , CONDITION , INST)
 BLOCWHILE ⇒  while ( CONDITION ) aco INSTS acof
 WHENINST => NUM -> INST 
