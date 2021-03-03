@@ -7,4 +7,7 @@
 
     int num_token_courant = 0;
 
+    void Token_Suiv();
+    void Test_Symbole (char* cl, char* COD_ERR);
+
 #endif
