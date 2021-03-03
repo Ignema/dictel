@@ -126,6 +126,7 @@ void PARMS()
 void TYPEVAR()
 {
     Test_Symbole(ID_TOKEN, "ID_ERR");
+    KIND();
     VALUE();
     TYPE();
     STATE();
@@ -220,6 +221,25 @@ void ALLOCATE(){
     }
     else ;
 }
+
+void INST()
+{
+    if(strcmp(token_courant, BEGIN_TOKEN)==0)
+        INSTS(); // 
+    else if(strcmp(token_courant, ID_TOKEN)==0)
+        AFFEC();
+    else if(strcmp(token_courant, IF_TOKEN)==0)
+        SI();
+    else if(strcmp(token_courant, WHILE_TOKEN)==0)
+        TANTQUE();
+    else if(strcmp(token_courant, WRITE_TOKEN)==0)
+        ECRIRE();
+    else if(strcmp(token_courant, READ_TOKEN)==0)
+        BLOCFOR();
+    else
+        ;
+}
+| WRITE | READ | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN | break | WHENINST | PARINST
 
 /**< vérifier si le type est un type valable ou non */
 void verifierType(){
