@@ -69,10 +69,13 @@ void PROGRAM()
     /**< Initialiser la taille de la table des symboles */
     t_tableau_des_symboles = 0;
 
-    Test_Symbole(ADD_TOKEN, "ADD_ERR");
-    Test_Symbole(PO_TOKEN, "PO_ERR");
-    BLOCK();
-    Test_Symbole(PF_TOKEN, "PF_ERR");
+    while (strcmp(token_courant, ADD_TOKEN)==0)
+    {
+        Test_Symbole(ADD_TOKEN, "ADD_ERR");
+        Test_Symbole(PO_TOKEN, "PO_ERR");
+        BLOCK();
+        Test_Symbole(PF_TOKEN, "PF_ERR");
+    }
 }
 
 void BLOCK()
@@ -131,6 +134,28 @@ void TYPEVAR()
     TYPE();
     STATE();
     ALLOCATE();
+}
+
+void KIND(){
+    if (strcmp(token_courant, VIR_TOKEN)==0)
+    {
+        Test_Symbole(VIR_TOKEN, "VIR_ERR");
+
+        if (strcmp(token_courant, KIND_TOKEN)==0)
+            Test_Symbole(KIND_TOKEN, "KIND_ERR");
+        else if (strcmp(token_courant, PO_TOKEN)==0)
+            FUNCTION(); /**< || IFDEF ||  FORDEF ||  STRUCT  confler */
+        else if (strcmp(token_courant, MRO_TOKEN)==0) // [
+            {
+                Test_Symbole(MRO_TOKEN, "MRO_ERR"); // ]
+                ARRAY5();
+                Test_Symbole(MRF_TOKEN, "MRF_ERR"); // ]
+            }
+        else if(strcmp(token_courant, /*expr*/)==0)   
+            EXPR();
+        else ;
+    }
+    else ;
 }
 
 void VALUE(){
@@ -224,16 +249,16 @@ void ALLOCATE(){
 
 void INST()
 {
-    if(strcmp(token_courant, BEGIN_TOKEN)==0)
-        INSTS(); // 
+    if(strcmp(token_courant, ACO_TOKEN)==0)
+        INSTS();
     else if(strcmp(token_courant, ID_TOKEN)==0)
         AFFEC();
     else if(strcmp(token_courant, IF_TOKEN)==0)
-        SI();
+        BLOCIF();
     else if(strcmp(token_courant, WHILE_TOKEN)==0)
-        TANTQUE();
-    else if(strcmp(token_courant, WRITE_TOKEN)==0)
-        ECRIRE();
+        BLOCWHILE();
+    else if(strcmp(token_courant, FOR_TOKEN)==0)
+        BLOCFOR();
     else if(strcmp(token_courant, READ_TOKEN)==0)
         BLOCFOR();
     else
