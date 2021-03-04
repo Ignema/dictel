@@ -546,7 +546,7 @@ void BLOCWHILE()
     Test_Symbole(ACF_TOKEN, ACF_ERR);
 }
 
-//WRITE  => log( " { {ID|symbole|chiffre} $ aco ID acf {ID|symbole|chiffre}  } " | ID )
+//WRITE  => log( " { {ID|symbole|chiffre} aco $ aco ID acf {ID|symbole|chiffre}  } " | ID )
 void WRITE(){
 
 	Test_Symbole(LOG_TOKEN, LOG_ERR);

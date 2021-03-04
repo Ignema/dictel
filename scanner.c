@@ -1,129 +1,16 @@
-#include <stdio.h>
-#include<string.h>
-#include <ctype.h>
-
-
-
-typedef enum {
-    ID_TOKEN,NUM_TOKEN,ACF_TOKEN,ACO_TOKEN,VIR_TOKEN,PLUS_TOKEN,MOINS_TOKEN,MULT_TOKEN,DIV_TOKEN,
-    EG_TOKEN,DIFF_TOKEN,INF_TOKEN,SUP_TOKEN,INFG_TOKEN,SUPEG_TOKEN,INTEROGATION_TOKEN,VOID_TOKEN,CHAR_TOKEN,SHORT_TOKEN,
-    INT_TOKEN,FLOAT_TOKEN,LONG_TOKEN,DOUBLE_TOKEN,SIGNED_TOKEN,UNSIGNED_TOKEN,STRING_TOKEN,PIPE_TOKEN,TYPE_TOKEN,
-    DCO_TOKEN,IMMUT_TOKEN,NUMMUT_TOKEN,NULL_TOKEN,IF_TOKEN,FOR_TOKEN,WHEN_TOKEN,WHILE_TOKEN,STRUCT_TOKEN,USE_TOKEN,
-    RUN_TOKEN,SYNC_TOKEN,ASYNC_TOKEN,SIZEOF_TOKEN,ALLOCAT_TOKEN,BREAK_TOKEN,FLECH_TOKEN,LOG_TOKEN,SCAN_TOKEN,DPNT_TOKEN,
-    DBPNT_TOKEN,RETURN_TOKEN,PARAMS_TOKEN,PF_TOKEN,PO_TOKEN,ADD_TOKEN,ERREUR_TOKEN,EOF_TOKEN
-
-} CODES_LEX ;
+//
+// Created by mohammed on 02/03/2021.
+//
+#include "scanner.h"
 
 char *TOKEN_CLE[]={"ID_TOKEN","NUM_TOKEN","ACF_TOKEN","ACO_TOKEN","VIR_TOKEN","PLUS_TOKEN","MOINS_TOKEN","MULT_TOKEN","DIV_TOKEN",
                    "EG_TOKEN","DIFF_TOKEN","INF_TOKEN","SUP_TOKEN","INFG_TOKEN","SUPEG_TOKEN","INTEROGATION_TOKEN","VOID_TOKEN","CHAR_TOKEN","SHORT_TOKEN",
-                   "INT_TOKEN","FLOAT_TOKEN","LONG_TOKEN","DOUBLE_TOKEN","SIGNED_TOKEN","UNSIGNED_TOKEN","STRING_TOKEN","PIPE_TOKEN","TYPE_TOKEN","DCOF_TOKEN",
+                   "INT_TOKEN","FLOAT_TOKEN","LONG_TOKEN","DOUBLE_TOKEN","SIGNED_TOKEN","UNSIGNED_TOKEN","STRING_TOKEN","PIPE_TOKEN","TYPE_TOKEN",
                    "IMMUT_TOKEN","NUMMUT_TOKEN","NULL_TOKEN","IF_TOKEN","FOR_TOKEN","WHEN_TOKEN","WHILE_TOKEN","STRUCT_TOKEN","USE_TOKEN",
                    "RUN_TOKEN","SYNC_TOKEN","ASYNC_TOKEN","SIZEOF_TOKEN","ALLOCAT_TOKEN","BREAK_TOKEN","FLECH_TOKEN","LOG_TOKEN","SCAN_TOKEN","DPNT_TOKEN",
-                   "DBPNT_TOKEN","RETURN_TOKEN","PARAMS_TOKEN","PF_TOKEN","PO_TOKEN","ADD_TOKEN","ERREUR_TOKEN","EOF_TOKEN"
+                   "DBPNT_TOKEN","RETURN_TOKEN","PARAMS_TOKEN","PF_TOKEN","PO_TOKEN","ADD_TOKEN","ERREUR_TOKEN","EOF_TOKEN","FUNCTION_TOKEN",
+                   "STATE_TOKEN","CRO_TOKEN","CRF_TOKEN","GUI_TOKEN","KIND_TOKEN","DOLLAR_TOKEN","EGSUP_TOKEN","DEL_TOKEN"
 };
-
-
-
-///////////////////////////////////////Analyseur Lexicale/////////////////////////////////////////
-/********************DECLARATION DE TYPE SYMBOLES*******************************/
-typedef struct s {
-    CODES_LEX code;// contient le token du symbole
-    char nom[20];// contient la forme textuelle du symbole
-    //struct s *suiv;
-}SYMBOLES;
-
-/*****************************Scanner****************************************/
-typedef struct {
-    char Eof ;
-    SYMBOLES SYMB_COUR;//SYMBOLE COURANT
-    char CAR_COUR;//CARACTERE COURANT
-    FILE * fluxSource;// FICHIER CODE SOURCE
-}Scanner;
-Scanner scanner;
-void CONSTRUCT_SCANNER(char *file_name);
-/***************FONCTIONS DE CATEGORIES**************************************/
-void LIRE_CAR();
-void SYM_SUIV();
-int IS_SEPARATOR();
-void AFFICHER_TOKEN(SYMBOLES symbole);
-/******************Liste symboles***************************************/
-struct symtab {
-   int id;
-   char *name;
-   int type;
-   struct symtab *next;
-};
-
-enum types {
-   KEYWORD = 1,
-   CONSTANT,
-   IDENTIFIER,
-   OPERATOR,
-   DELIMITER,
-   WHITESPACE
-};
-
-struct symtab *last_entry(struct symtab *start)
-{
-   struct symtab *p;
-   p = start;
-   while(p != NULL) {
-      p = p -> next;
-   }
-   return p;
-}
-
-void add_entry(char* name, int type, struct symtab *start)
-{
-   struct symtab *new;
-   new = last_entry(start);
-   int id;
-   if(new == start) {
-      new = start;
-      id = 0;
-   }
-   else {
-      new = malloc(sizeof(struct symtab));
-      id = last_entry(start) -> id;
-      last_entry(start) -> next = new;
-   }
-   new -> id = id + 1;
-   new -> name = name;
-       new -> type = type;
-   new -> next = NULL;
-}
-
-struct symtab *find_entry(char* name, struct symtab *start)
-{
-   struct symtab *p;
-   p = start;
-   while( p != NULL) {
-      if(strcmp(p -> name, name) == 0) {
-         return p;
-      }
-   }
-}
-
-
-
-
-/*************************************/
-/****************Main*****************/
-
-int main(int argc, char *argv[]) {
-    //int nbI=0;
-    CONSTRUCT_SCANNER("../test9.txt");
-    LIRE_CAR();
-    //printf("(%c)\n",scanner.SYMB_COUR.nom[0]);
-    //while(scanner.CAR_COUR!='\0'){
-    SYM_SUIV();
-    //}
-
-    return 0;
-}
-
-
-
 
 ////////////////////////////////////////////////////////////////////////////////
 /********************DEFINITION FONCTION ANALYSEUR LEXICAL*********************/
@@ -156,10 +43,12 @@ void SYM_SUIV(){
 
         }
         scanner.SYMB_COUR.code=NUM_TOKEN;
-        AFFICHER_TOKEN(scanner.SYMB_COUR);
+        //AFFICHER_TOKEN(scanner.SYMB_COUR);
         //continue;
         printf("\n");
-        SYM_SUIV();
+        //add_entry(&scanner.SYMB_COUR,&list);
+        //////SYM_SUIV();
+        //return scanner.SYMB_COUR;
         return;
         //printf("\n (code token:%d name token %s nom token:%s)\n\n",scanner.SYMB_COUR.code,TOKEN_CLE[scanner.SYMB_COUR.code],scanner.SYMB_COUR.nom);
     }
@@ -274,13 +163,26 @@ void SYM_SUIV(){
         }else if(strcmp(scanner.SYMB_COUR.nom,"short")==0){
             scanner.SYMB_COUR.code=SHORT_TOKEN;
             //SYM_SUIV();
+        }else if(strcmp(scanner.SYMB_COUR.nom,"function")==0){
+            scanner.SYMB_COUR.code=FUNCTION_TOKEN;
+            //SYM_SUIV();
+        }else if(strcmp(scanner.SYMB_COUR.nom,"state")==0){
+            scanner.SYMB_COUR.code=STATE_TOKEN;
+            //SYM_SUIV();
+        }else if(strcmp(scanner.SYMB_COUR.nom,"kind")==0){
+            scanner.SYMB_COUR.code=KIND_TOKEN;
+            //SYM_SUIV();
+        }else if(strcmp(scanner.SYMB_COUR.nom,"delete")==0){
+            scanner.SYMB_COUR.code=DEL_TOKEN;
+            //SYM_SUIV();
         }
         else{
             scanner.SYMB_COUR.code=ID_TOKEN;
             //SYM_SUIV();
         }
-        AFFICHER_TOKEN(scanner.SYMB_COUR);
-        SYM_SUIV();
+        //AFFICHER_TOKEN(scanner.SYMB_COUR);
+        //add_entry(&scanner.SYMB_COUR,&list);
+        //////SYM_SUIV();
         return;
         //continue;
         //printf("\n (code token:%d name token %s nom token:%s)\n\n",scanner.SYMB_COUR.code,TOKEN_CLE[scanner.SYMB_COUR.code],scanner.SYMB_COUR.nom);
@@ -290,9 +192,31 @@ void SYM_SUIV(){
     switch(scanner.CAR_COUR) {
         case '+':
             scanner.SYMB_COUR.code=PLUS_TOKEN;
-            AFFICHER_TOKEN(scanner.SYMB_COUR);
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
             LIRE_CAR();
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
+            break;
+        case '[':
+            scanner.SYMB_COUR.code=CRO_TOKEN;
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
+            LIRE_CAR();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
+            break;
+        case ']':
+            scanner.SYMB_COUR.code=CRF_TOKEN;
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
+            LIRE_CAR();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
+            break;
+        case '$':
+            scanner.SYMB_COUR.code=DOLLAR_TOKEN;
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
+            LIRE_CAR();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            ///////SYM_SUIV();
             break;
         case '-':
 
@@ -301,7 +225,7 @@ void SYM_SUIV(){
                 case '>':
                     strcpy(scanner.SYMB_COUR.nom,"->");
                     scanner.SYMB_COUR.code=FLECH_TOKEN;
-                    AFFICHER_TOKEN(scanner.SYMB_COUR);
+                    //AFFICHER_TOKEN(scanner.SYMB_COUR);
                     LIRE_CAR();
 
                     break;
@@ -309,65 +233,74 @@ void SYM_SUIV(){
                     strcpy(scanner.SYMB_COUR.nom,"-");
                     scanner.SYMB_COUR.code=MOINS_TOKEN;
 
-                    AFFICHER_TOKEN(scanner.SYMB_COUR);
+                    //AFFICHER_TOKEN(scanner.SYMB_COUR);
             }
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
             break;
         case '*':
             strcpy(scanner.SYMB_COUR.nom,"*");
             scanner.SYMB_COUR.code=MULT_TOKEN;
-            AFFICHER_TOKEN(scanner.SYMB_COUR);
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
             LIRE_CAR();
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
             break;
         case '?':
             strcpy(scanner.SYMB_COUR.nom,"?");
             scanner.SYMB_COUR.code=INTEROGATION_TOKEN;
-            AFFICHER_TOKEN(scanner.SYMB_COUR);
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
             LIRE_CAR();
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
             break;
         case '/':
             strcpy(scanner.SYMB_COUR.nom,"/");
             scanner.SYMB_COUR.code=DIV_TOKEN;
-            AFFICHER_TOKEN(scanner.SYMB_COUR);
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
             LIRE_CAR();
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            /////SYM_SUIV();
             break;
         case '{':
             strcpy(scanner.SYMB_COUR.nom,"{");
             scanner.SYMB_COUR.code=ACO_TOKEN;
-            AFFICHER_TOKEN(scanner.SYMB_COUR);
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
             LIRE_CAR();
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
             break;
         case '}':
             strcpy(scanner.SYMB_COUR.nom,"}");
             scanner.SYMB_COUR.code=ACF_TOKEN;
-            AFFICHER_TOKEN(scanner.SYMB_COUR);
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
             LIRE_CAR();
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
             break;
         case '(':
             strcpy(scanner.SYMB_COUR.nom,"(");
             scanner.SYMB_COUR.code=PO_TOKEN;
-            AFFICHER_TOKEN(scanner.SYMB_COUR);
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
             LIRE_CAR();
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
             break;
         case ')':
             strcpy(scanner.SYMB_COUR.nom,")");
             scanner.SYMB_COUR.code=PF_TOKEN;
-            AFFICHER_TOKEN(scanner.SYMB_COUR);
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
             LIRE_CAR();
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
             break;
         case 34:
             strcpy(scanner.SYMB_COUR.nom,"\"");
-            scanner.SYMB_COUR.code=DCO_TOKEN;
-            AFFICHER_TOKEN(scanner.SYMB_COUR);
+            scanner.SYMB_COUR.code=GUI_TOKEN;
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
             LIRE_CAR();
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            /////SYM_SUIV();
             break;
         case '.':
             LIRE_CAR();
@@ -375,39 +308,53 @@ void SYM_SUIV(){
                 case '.':
                     strcpy(scanner.SYMB_COUR.nom,"..");
                     scanner.SYMB_COUR.code=DPNT_TOKEN;
-                    AFFICHER_TOKEN(scanner.SYMB_COUR);
+                    //AFFICHER_TOKEN(scanner.SYMB_COUR);
                     LIRE_CAR();
                     break;
                 default:
                     scanner.SYMB_COUR.code=ERREUR_TOKEN;
             }
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            /////SYM_SUIV();
             break;
         case ',':
             strcpy(scanner.SYMB_COUR.nom,",");
             scanner.SYMB_COUR.code=VIR_TOKEN;
-            AFFICHER_TOKEN(scanner.SYMB_COUR);
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
             LIRE_CAR();
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
             break;
 
         case ':':
             strcpy(scanner.SYMB_COUR.nom,":");
             scanner.SYMB_COUR.code=DBPNT_TOKEN;
-            AFFICHER_TOKEN(scanner.SYMB_COUR);
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
             LIRE_CAR();
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
             break;
         case '=':
-            strcpy(scanner.SYMB_COUR.nom,"=");
-            scanner.SYMB_COUR.code=EG_TOKEN;
-            AFFICHER_TOKEN(scanner.SYMB_COUR);
             LIRE_CAR();
-            SYM_SUIV();
+            switch(scanner.CAR_COUR) {
+                case '>':
+                    strcpy(scanner.SYMB_COUR.nom,"=>");
+                    scanner.SYMB_COUR.code=EGSUP_TOKEN;
+                    //AFFICHER_TOKEN(scanner.SYMB_COUR);
+                    LIRE_CAR();
+                    break;
+                default:
+                    strcpy(scanner.SYMB_COUR.nom,"=");
+                    scanner.SYMB_COUR.code=EG_TOKEN;
+                    //AFFICHER_TOKEN(scanner.SYMB_COUR);
+                    break;
+            }
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
             break;
         case EOF:
             scanner.SYMB_COUR.code=EOF_TOKEN;
-            AFFICHER_TOKEN(scanner.SYMB_COUR);
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
             break;
         case '>':
             LIRE_CAR();
@@ -415,16 +362,17 @@ void SYM_SUIV(){
                 case '=':
                     strcpy(scanner.SYMB_COUR.nom,">=");
                     scanner.SYMB_COUR.code=SUPEG_TOKEN;
-                    AFFICHER_TOKEN(scanner.SYMB_COUR);
+                    //AFFICHER_TOKEN(scanner.SYMB_COUR);
                     LIRE_CAR();
                     break;
                 default:
                     strcpy(scanner.SYMB_COUR.nom,">");
                     scanner.SYMB_COUR.code=SUP_TOKEN;
-                    AFFICHER_TOKEN(scanner.SYMB_COUR);
+                    //AFFICHER_TOKEN(scanner.SYMB_COUR);
                     break;
             }
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
             break;
         case '<':
             LIRE_CAR();
@@ -432,27 +380,28 @@ void SYM_SUIV(){
                 case '=':
                     strcpy(scanner.SYMB_COUR.nom,"<=");
                     scanner.SYMB_COUR.code=INFG_TOKEN;
-                    AFFICHER_TOKEN(scanner.SYMB_COUR);
+                    //AFFICHER_TOKEN(scanner.SYMB_COUR);
                     LIRE_CAR();
                     break;
                 case '>':
                     strcpy(scanner.SYMB_COUR.nom,"<>");
                     scanner.SYMB_COUR.code=DIFF_TOKEN;
-                    AFFICHER_TOKEN(scanner.SYMB_COUR);
+                    //AFFICHER_TOKEN(scanner.SYMB_COUR);
                     LIRE_CAR();
                     break;
                 default:
                     strcpy(scanner.SYMB_COUR.nom,"<");
                     scanner.SYMB_COUR.code=INF_TOKEN;
-                    AFFICHER_TOKEN(scanner.SYMB_COUR);
+                    //AFFICHER_TOKEN(scanner.SYMB_COUR);
                     break;
             }
-            SYM_SUIV();
+            //add_entry(&scanner.SYMB_COUR,&list);
+            //////SYM_SUIV();
             break;
         case '\0':
             strcpy(scanner.SYMB_COUR.nom,"eof");
             scanner.SYMB_COUR.code=EOF_TOKEN;
-            AFFICHER_TOKEN(scanner.SYMB_COUR);
+            //AFFICHER_TOKEN(scanner.SYMB_COUR);
             //LIRE_CAR();
             break;
         default:

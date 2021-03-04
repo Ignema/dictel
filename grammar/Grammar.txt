@@ -13,7 +13,7 @@ acf = '}'
 
 # ** La grammaire P **:
 
-S => ADD { ADD }
+PROGRAM => ADD { ADD }
 ADD => add ( ID KIND VALUE TYPE STATE ALLOCATE  USE RUN )
 ----------------------------------------------------------
 KIND  => epsilon | ,kind=" K
@@ -46,20 +46,21 @@ ALLOCATE => epsilon |, allocate = " chiffre * sizeof ( TYPES ) "
 TYPES => void | char | short | int | long | float | double | signed | unsigned | string | pipe
 ---------------------------------------------------------------------------------------
 INSTS =>  INST { INST } 
-INST  => epsilon | WRITE | READ | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN | break | WHENINST | PARINST
+INST  => epsilon | WRITE | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN | break | WHENINST | PARINST | DELETEINST
 ----------------------------------------------------------
-WRITE  => log( " { {ID|symbole|chiffre} aco $ aco ID acf {chaine}  } " | ID )
+WRITE  => log( " { {ID|symbole|chiffre} $ aco ID acf {ID|symbole|chiffre}  } " | ID )
 
 BLOCIF  => if ( CONDITION ) aco INSTS acf
 	=> CONDITION ? aco INSTS acf : aco INSTS acf
 AFFEC   => ID = READ
 READ => EXPR | scan()
 
-BLOCFOR ⇒ for (AFFEC , CONDITION , INST)
+BLOCFOR ⇒ for (AFFEC , CONDITION , INST) aco INSTS acof 
 BLOCWHILE ⇒  while ( CONDITION ) aco INSTS acof
 WHENINST => NUM -> INST 
 RETURN => return EXPR 
 PARINST => params ( ID )
+DELETEINST => del ( ID )
 -----------------------------------------------------------------------------
 CONDITION  => EXPR RELOP EXPR
 RELOP => = | <> | < | > | <= | >=
