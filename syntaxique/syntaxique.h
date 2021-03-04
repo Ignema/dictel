@@ -5,6 +5,11 @@
 #ifndef SYNTAXIQUE_H_INCLUDED
 #define SYNTAXIQUE_H_INCLUDED
 
+    typedef struct { 
+        char code[20];
+        char valueu[20];
+    } token_courant;
+
     void Token_Suiv();
     void Test_Symbole (char* cl, char* COD_ERR);
 

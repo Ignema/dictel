@@ -44,13 +44,11 @@
     char * ACO_TOKEN = "ACO_TOKEN";
     char * ACF_TOKEN = "ACF_TOKEN";
 
-    char token_courant[20];
-
 void Token_Suiv()
 {
     /**< Récupérer le token suivant */
     num_token_courant++ ;
-    token_courant = tableauToken[num_token_courant].code ;
+    token_courant.code = tableauToken[num_token_courant].code ;
 }
 
 void Test_Symbole (char * classe_lexical, char * COD_ERR)
@@ -69,12 +67,12 @@ void ADD()
     /**< Initialiser la taille de la table des symboles */
     t_tableau_des_symboles = 0;
 
-    while (strcmp(token_courant, ADD_TOKEN)==0)
+    while (strcmp(token_courant.code, ADD_TOKEN)==0)
     {
         Test_Symbole(ADD_TOKEN, "ADD_ERR");
         Test_Symbole(PO_TOKEN, "PO_ERR");
         
-        if (strcmp(token_courant, ID_TOKEN)==0){
+        if (strcmp(token_courant.code, ID_TOKEN)==0){
 
             Test_Symbole(ID_TOKEN, "ID_ERR");
             KIND();
@@ -86,7 +84,7 @@ void ADD()
             RUN();
         }
             
-        else if (strcmp(token_courant, MAIN_TOKEN)==0)
+        else if (strcmp(token_courant.code, MAIN_TOKEN)==0)
             MAIN();
 
         Test_Symbole(PF_TOKEN, "PF_ERR");
@@ -117,15 +115,15 @@ void FUNCTION()
 
 void PARMS()
 {
-    if (strcmp(token_courant, ID_TOKEN)==0){
+    if (strcmp(token_courant.code, ID_TOKEN)==0){
         Test_Symbole(ID_TOKEN, "ID_ERR");
 
-		while (strcmp(token_courant, VIR_TOKEN)==0){
+		while (strcmp(token_courant.code, VIR_TOKEN)==0){
                Test_Symbole(VIR_TOKEN, "VIR_ERR");
                Test_Symbole(ID_TOKEN, "ID_ERR");
 		};
     }
-    else if (strcmp(token_courant, PF_TOKEN)==0)
+    else if (strcmp(token_courant.code, PF_TOKEN)==0)
         ;
     else
         Erreur("PARMS_PF_ERR");
@@ -133,41 +131,41 @@ void PARMS()
 
 void KIND()
 {
-    if (strcmp(token_courant, VIR_TOKEN)==0)
+    if (strcmp(token_courant.code, VIR_TOKEN)==0)
     {
         Test_Symbole(VIR_TOKEN, "VIR_ERR");
 
-        if (strcmp(token_courant, KIND_TOKEN)==0){
+        if (strcmp(token_courant.code, KIND_TOKEN)==0){
 
             Test_Symbole(KIND_TOKEN, "KIND_ERR");
             Test_Symbole(EG_TOKEN, "EG_ERR");
             Test_Symbole(CT_TOKEN, "CT_ERR");
 
-            if(strcmp(token_courant, IF_TOKEN)==0){
+            if(strcmp(token_courant.code, IF_TOKEN)==0){
                 Token_Suiv();
                 Test_Symbole(CT_TOKEN, "CT_ERR");
                 Test_Symbole(VIR_TOKEN, "VIR_ERR");
                 IFDEF();
             }    
-            else if(strcmp(token_courant, FOR_TOKEN)==0){
+            else if(strcmp(token_courant.code, FOR_TOKEN)==0){
                 Token_Suiv();
                 Test_Symbole(CT_TOKEN, "CT_ERR");
                 Test_Symbole(VIR_TOKEN, "VIR_ERR");
                 FORDEF();
             } 
-            else if(strcmp(token_courant, FUNCTION_TOKEN)==0){
+            else if(strcmp(token_courant.code, FUNCTION_TOKEN)==0){
                 Token_Suiv();
                 Test_Symbole(CT_TOKEN, "CT_ERR");
                 Test_Symbole(VIR_TOKEN, "VIR_ERR");
                 FUNCTION();
             }
-            else if(strcmp(token_courant, WHEN_TOKEN)==0){
+            else if(strcmp(token_courant.code, WHEN_TOKEN)==0){
                 Token_Suiv();
                 Test_Symbole(CT_TOKEN, "CT_ERR");
                 Test_Symbole(VIR_TOKEN, "VIR_ERR");
                 SWITCHDEF();
             }
-            else if(strcmp(token_courant, STRUCT_TOKEN)==0){
+            else if(strcmp(token_courant.code, STRUCT_TOKEN)==0){
                 Token_Suiv();
                 Test_Symbole(CT_TOKEN, "CT_ERR");
                 Test_Symbole(VIR_TOKEN, "VIR_ERR");
@@ -218,7 +216,7 @@ void FORDEF()
 void STRUCT()
 {
     AFFEC();
-    while (strcmp(token_courant, VIR_TOKEN)==0){
+    while (strcmp(token_courant.code, VIR_TOKEN)==0){
         Test_Symbole(VIR_TOKEN, "VIR_ERR");
         AFFEC();
     };
@@ -232,7 +230,7 @@ void STRUCT()
     Test_Symbole(ID_TOKEN, "ID_ERR");
     Test_Symbole(FLECH_TOKEN, "FLECH_ERR");
     TYPES();
-    while (strcmp(token_courant, ID_TOKEN)==0){
+    while (strcmp(token_courant.code, ID_TOKEN)==0){
         Test_Symbole(ID_TOKEN, "ID_ERR");
         Test_Symbole(FLECH_TOKEN, "FLECH_ERR");
         TYPES();
@@ -257,25 +255,25 @@ void SWITCHDEF()
 
 void VALUE()
 {
-    if (strcmp(token_courant, VIR_TOKEN)==0)
+    if (strcmp(token_courant.code, VIR_TOKEN)==0)
     {
         Test_Symbole(VIR_TOKEN, "VIR_ERR");
 
-        if (strcmp(token_courant, NUM_TOKEN)==0){
+        if (strcmp(token_courant.code, NUM_TOKEN)==0){
             Test_Symbole(NUM_TOKEN, "NUM_ERR");
-            if (strcmp(token_courant, PT_TOKEN)==0){ //Range
+            if (strcmp(token_courant.code, PT_TOKEN)==0){ //Range
                 Test_Symbole(PT_TOKEN, "PT_ERR");
                 Test_Symbole(PT_TOKEN, "PT_ERR");
                 Test_Symbole(NUM_TOKEN, "NUM_ERR");
             }
         }
-        else if (strcmp(token_courant, MRO_TOKEN)==0) // [
+        else if (strcmp(token_courant.code, MRO_TOKEN)==0) // [
             {
                 Test_Symbole(MRO_TOKEN, "MRO_ERR"); // ]
                 ARRAY5();
                 Test_Symbole(MRF_TOKEN, "MRF_ERR"); // ]
             }
-        else if(strcmp(token_courant, ID_TOKEN)==0)   
+        else if(strcmp(token_courant.code, ID_TOKEN)==0)   
             EXPR();
         else ;
     }
@@ -284,10 +282,10 @@ void VALUE()
 
 void ARRAY()
 {
-    if(strcmp(token_courant, ID_TOKEN)==0)
+    if(strcmp(token_courant.code, ID_TOKEN)==0)
     {
         EXPR();
-        while (strcmp(token_courant, VIR_TOKEN)==0){
+        while (strcmp(token_courant.code, VIR_TOKEN)==0){
             Test_Symbole(VIR_TOKEN, "VIR_ERR");
             EXPR();
         };
@@ -297,15 +295,15 @@ void ARRAY()
 
 void TYPE()
 {
-    if (strcmp(token_courant, VIR_TOKEN)==0)
+    if (strcmp(token_courant.code, VIR_TOKEN)==0)
     {
         Test_Symbole(VIR_TOKEN, "VIR_ERR");
 
-        if (strcmp(token_courant, TYPE_TOKEN)==0)
+        if (strcmp(token_courant.code, TYPE_TOKEN)==0)
         {
             Test_Symbole(TYPE_TOKEN, "TYPE_ERR");
             
-            if(strcmp(token_courant, PIPE_TOKEN)==0)
+            if(strcmp(token_courant.code, PIPE_TOKEN)==0)
                 Token_Suiv();
             else 
                 TYPES();
@@ -318,25 +316,25 @@ void TYPE()
 /**< vérifier si le type est un type valable ou non */
 void TYPES()
 {
-    if(strcmp(token_courant, VOID_TOKEN)==0)
+    if(strcmp(token_courant.code, VOID_TOKEN)==0)
         Token_Suiv();
-    if(strcmp(token_courant, CHAR_TOKEN)==0)
+    if(strcmp(token_courant.code, CHAR_TOKEN)==0)
         Token_Suiv();
-    else if(strcmp(token_courant, SHORT_TOKEN)==0)
+    else if(strcmp(token_courant.code, SHORT_TOKEN)==0)
         Token_Suiv();
-    else if(strcmp(token_courant, INT_TOKEN)==0)
+    else if(strcmp(token_courant.code, INT_TOKEN)==0)
         Token_Suiv();
-    else if(strcmp(token_courant, LONG_TOKEN)==0)
+    else if(strcmp(token_courant.code, LONG_TOKEN)==0)
         Token_Suiv();
-    else if(strcmp(token_courant, FLOAT_TOKEN)==0)
+    else if(strcmp(token_courant.code, FLOAT_TOKEN)==0)
         Token_Suiv();
-    else if(strcmp(token_courant, DOUBLE_TOKEN)==0)
+    else if(strcmp(token_courant.code, DOUBLE_TOKEN)==0)
         Token_Suiv();
-    else if(strcmp(token_courant, SIGNED_TOKEN)==0)
+    else if(strcmp(token_courant.code, SIGNED_TOKEN)==0)
         Token_Suiv();
-    else if(strcmp(token_courant, UNSIGNED_TOKEN)==0)
+    else if(strcmp(token_courant.code, UNSIGNED_TOKEN)==0)
         Token_Suiv();
-    else if(strcmp(token_courant, STRING_TOKEN)==0)
+    else if(strcmp(token_courant.code, STRING_TOKEN)==0)
         Token_Suiv();
     else 
         Erreur("TYPE_IN_ERR");
@@ -344,19 +342,19 @@ void TYPES()
 
 void STATE()
 {
-    if (strcmp(token_courant, VIR_TOKEN)==0)
+    if (strcmp(token_courant.code, VIR_TOKEN)==0)
     {
         Test_Symbole(VIR_TOKEN, "VIR_ERR");
 
-        if (strcmp(token_courant, STATE_TOKEN)==0)
+        if (strcmp(token_courant.code, STATE_TOKEN)==0)
         {
             Test_Symbole(STATE_TOKEN, "STATE_ERR");
                 
-            if (strcmp(token_courant, IMMUTABLE_TOKEN)==0)
+            if (strcmp(token_courant.code, IMMUTABLE_TOKEN)==0)
                 Token_Suiv();
-            if (strcmp(token_courant, NONNULLABLE_TOKEN)==0)
+            if (strcmp(token_courant.code, NONNULLABLE_TOKEN)==0)
                 Token_Suiv();
-            if (strcmp(token_courant, NULLABLE_TOKEN)==0)
+            if (strcmp(token_courant.code, NULLABLE_TOKEN)==0)
                 Token_Suiv();
             else 
                 Erreur("STATE_IN_ERR");
@@ -368,16 +366,16 @@ void STATE()
 
 void ALLOCATE()
 {
-    if (strcmp(token_courant, VIR_TOKEN)==0)
+    if (strcmp(token_courant.code, VIR_TOKEN)==0)
     {
         Test_Symbole(VIR_TOKEN, "VIR_ERR");
 
-        if (strcmp(token_courant, ALLOCATE_TOKEN)==0)
+        if (strcmp(token_courant.code, ALLOCATE_TOKEN)==0)
         {
             Test_Symbole(ALLOCATE_TOKEN, "ALLOCATE_ERR");
 
             Test_Symbole(EG_TOKEN, "EG_ERR");
-            if (strcmp(token_courant, NUM_TOKEN)==0)
+            if (strcmp(token_courant.code, NUM_TOKEN)==0)
                 Test_Symbole(NUM_TOKEN, "NUM_ERR");
             else 
                 Test_Symbole(ID_TOKEN, "ID_ERR");
@@ -395,11 +393,11 @@ void ALLOCATE()
 
 void USE()
 {
-    if (strcmp(token_courant, VIR_TOKEN)==0)
+    if (strcmp(.code, VIR_TOKEN)==0)
     {
         Test_Symbole(VIR_TOKEN, "VIR_ERR");
 
-        if (strcmp(token_courant, USE_TOKEN)==0)
+        if (strcmp(token_courant.code, USE_TOKEN)==0)
         {
             Test_Symbole(USE_TOKEN, "USE_ERR");
             Test_Symbole(EG_TOKEN, "EG_ERR");
@@ -412,18 +410,18 @@ void USE()
 
 void RUN()
 {
-    if (strcmp(token_courant, VIR_TOKEN)==0)
+    if (strcmp(token_courant.code, VIR_TOKEN)==0)
     {
         Test_Symbole(VIR_TOKEN, "VIR_ERR");
 
-        if (strcmp(token_courant, RUN_TOKEN)==0)
+        if (strcmp(token_courant.code, RUN_TOKEN)==0)
         {
             Test_Symbole(RUN_TOKEN, "RUN_ERR");
             Test_Symbole(EG_TOKEN, "EG_ERR");
 
-            if (strcmp(token_courant, ASYNCHRONOUS_TOKEN)==0)
+            if (strcmp(token_courant.code, ASYNCHRONOUS_TOKEN)==0)
                 Token_Suiv();
-            if (strcmp(token_courant, SYNCHRONOUS_TOKEN)==0)
+            if (strcmp(token_courant.code, SYNCHRONOUS_TOKEN)==0)
                 Token_Suiv();
             else 
                 Erreur("RUN_IN_ERR");
@@ -437,39 +435,64 @@ void INSTS()
 {
     Test_Symbole(ACO_TOKEN, "ACO_ERR");
     INST();
-    while(token_courant.CODE == LOG_TOKEN || token_courant.CODE == ID_TOKEN || token_courant.CODE == IF_TOKEN || 
-        token_courant.CODE == FOR_TOKEN || token_courant.CODE == WHILE_TOKEN || token_courant.CODE ==  KEY_TOKEN ||
-        token_courant.CODE == ADD_TOKEN || token_courant.CODE == RETURN_TOKEN || token_courant.CODE == NUM_TOKEN || 
-        token_courant.CODE == PARAMS_TOKEN || token_courant.CODE == BREAK_TOKEN){
+    while(token_courant.code == LOG_TOKEN || token_courant.code == ID_TOKEN || token_courant.code == IF_TOKEN || 
+        token_courant.code == FOR_TOKEN || token_courant.code == WHILE_TOKEN || token_courant.code ==  KEY_TOKEN ||
+        token_courant.code == ADD_TOKEN || token_courant.code == RETURN_TOKEN || token_courant.code == NUM_TOKEN || 
+        token_courant.code == PARAMS_TOKEN || token_courant.code == BREAK_TOKEN){
         INST();
     }
     //Test_Symbole(ACF_TOKEN, "ACF_ERR")  ;
 }
 
-void INST()
-{
-    if(strcmp(token_courant, ACO_TOKEN)==0)
-        INSTS();
-    else if(strcmp(token_courant, ADD_TOKEN)==0)
-        ADD();
-    else if(strcmp(token_courant, LOG_TOKEN)==0)
-        WRITE();
-    else if(strcmp(token_courant, ID_TOKEN)==0)
-        AFFEC();
-    else if(strcmp(token_courant, IF_TOKEN)==0)
-        BLOCIF();
-    else if(strcmp(token_courant, FOR_TOKEN)==0)
-        BLOCFOR();
-    else if(strcmp(token_courant, WHILE_TOKEN)==0)
-        BLOCWHILE();
-    else if(strcmp(token_courant, READ_TOKEN)==0)
-        BLOCFOR();
-    else if(strcmp(token_courant, NUM_TOKEN)==0)
-        WHENINST();
-    else if(strcmp(token_courant, RETURN_TOKEN)==0)
-        RETURN();
-    else
-        ;
+void INST(){
+	switch(token_courant.code){
+
+        case ACO_TOKEN :
+			INSTS();
+            break;
+
+        case ID_TOKEN :
+			AFFEC();
+            break;
+
+        case ADD_TOKEN :
+			ADD();
+			break;
+
+		case LOG_TOKEN :
+			WRITE();
+			break;
+
+		case IF_TOKEN :
+			BLOCIF();
+			break;
+
+		case FOR_TOKEN :
+			BLOCFOR();
+			break;
+
+		case WHILE_TOKEN :
+			BLOCWHILE();
+			break;
+
+		case NUM_TOKEN : 
+			WHENINST();
+			break;
+
+		case PARAMS_TOKEN :
+            PARINST();
+			break;
+
+        case RETURN_TOKEN :
+			RETURN();
+			break;
+
+		case BREAK_TOKEN :
+			break;
+
+		default:
+			break;
+	}
 }
 
 void AFFEC()
@@ -481,9 +504,9 @@ void AFFEC()
 
 void READ()
 {
-    if(strcmp(token_courant, ID_TOKEN)==0)
+    if(strcmp(token_courant.code, ID_TOKEN)==0)
         EXPR();
-    else if(strcmp(token_courant, SCAN_TOKEN)==0)
+    else if(strcmp(token_courant.code, SCAN_TOKEN)==0)
         SCAN ();
 }
 
@@ -512,7 +535,7 @@ void BLOCIF()
     CONDITION();
     Test_Symbole(PF_TOKEN, "PF_ERR");
 
-    if(strcmp(token_courant, ACO_TOKEN)==0){
+    if(strcmp(token_courant.code, ACO_TOKEN)==0){
         Test_Symbole(ACO_TOKEN, "ACO_ERR");
         INSTS();
         Test_Symbole(ACF_TOKEN, "ACF_ERR");
@@ -549,7 +572,7 @@ void BLOCWHILE()
     CONDITION();
     Test_Symbole(PF_TOKEN, "PF_ERR");
 
-    if(strcmp(token_courant, ACO_TOKEN)==0){
+    if(strcmp(token_courant.code, ACO_TOKEN)==0){
         Test_Symbole(ACO_TOKEN, "ACO_ERR");
         INSTS();
         Test_Symbole(ACF_TOKEN, "ACF_ERR");
@@ -564,20 +587,20 @@ void WRITE(){
 	Test_Symbole(LOG_TOKEN, LOG_ERR);
 	Test_Symbole(PO_TOKEN, PO_ERR);
 
-    switch(token_courant.CODE){
+    switch(token_courant.code){
 
 		case ID_TOKEN :
-            sym_suiv();
+            Token_Suiv();
 		    Test_Symbole(PF_TOKEN, PF_ERR);
             break;
         
         case GUI_TOKEN :
-            sym_suiv();
-            while(token_courant.CODE == ID_TOKEN || token_courant.CODE == SYMB_TOKEN || token_courant.CODE == CHIFF_TOKEN){
-                sym_suiv();
+            Token_Suiv();
+            while(token_courant.code == ID_TOKEN || token_courant.code == SYMB_TOKEN || token_courant.code == CHIFF_TOKEN){
+                Token_Suiv();
             }
 
-            if (strcmp(token_courant, DOLLAR_TOKEN)==0){
+            if (strcmp(token_courant.code, DOLLAR_TOKEN)==0){
 
 	            Test_Symbole(DOLLAR_TOKEN, DOLLAR_ERR);
 	            Test_Symbole(ACO_TOKEN, ACO_ERR);
@@ -585,8 +608,8 @@ void WRITE(){
 	            Test_Symbole(ACF_TOKEN, ACF_ERR);
             }
 
-            while(token_courant.CODE == CHAIN_TOKEN){  
-                sym_suiv();
+            while(token_courant.code == CHAIN_TOKEN){  
+                Token_Suiv();
             }
 
             Test_Symbole(GUI_TOKEN, GUI_ERR);
@@ -644,7 +667,7 @@ void RELOP()
         default:
             Erreur("COND_ERR");
     }
-    Sym_SuivS();   
+    Token_Suiv();   
 }
 
 //EXPR => TERM { ADDOP TERM }
@@ -661,15 +684,15 @@ void EXPR(){
 void ADDOP(){
     switch (Sym_Cour.CODE){
         case PLUS_TOKEN:
-            sym_suiv();
+            Token_Suiv();
             break;
        
         case MOINS_TOKEN:
-            sym_suiv();
+            Token_Suiv();
             break;
         
         default:
-            afficher_Erreur(ADDOP_ERR);
+            Erreur("ADDOP_ERR");
     }
 }
 
@@ -686,11 +709,11 @@ void TERM(){
 void MULOP(){
     switch (Sym_Cour.CODE){
         case MULT_TOKEN:
-            sym_suiv();
+            Token_Suiv();
             break;
         
         case DIV_TOKEN:
-            sym_suiv();
+            Token_Suiv();
             break;
         
         default:
@@ -702,21 +725,21 @@ void MULOP(){
 void FACT(){
     switch (Sym_Cour.CODE){
         case ID_TOKEN:
-            sym_suiv();
+            Token_Suiv();
             break;
         
         case NUM_TOKEN:
-            sym_suiv(); 
+            Token_Suiv(); 
             break;
         
         case PO_TOKEN:
-            sym_suiv();
+            Token_Suiv();
             EXPR();
             Test_Symbole(PF_TOKEN, PF_ERR);
             break;
         
         default:
-            afficher_Erreur(FACT_ERR);
+            Erreur("FACT_ERR");
     }
 }
 
