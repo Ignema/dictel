@@ -81,8 +81,8 @@ typedef enum
     MULOP_ERR,
     FACT_ERR,
     CRO_ERR,
-    CRF_ERR
-
+    CRF_ERR,
+    EGSUP_ERR
 
 } ERREUR_TOKENS;
 
