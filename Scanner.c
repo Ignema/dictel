@@ -46,6 +46,64 @@ void LIRE_CAR();
 void SYM_SUIV();
 int IS_SEPARATOR();
 void AFFICHER_TOKEN(SYMBOLES symbole);
+/******************Liste symboles***************************************/
+struct symtab {
+   int id;
+   char *name;
+   int type;
+   struct symtab *next;
+};
+
+enum types {
+   KEYWORD = 1,
+   CONSTANT,
+   IDENTIFIER,
+   OPERATOR,
+   DELIMITER,
+   WHITESPACE
+};
+
+struct symtab *last_entry(struct symtab *start)
+{
+   struct symtab *p;
+   p = start;
+   while(p != NULL) {
+      p = p -> next;
+   }
+   return p;
+}
+
+void add_entry(char* name, int type, struct symtab *start)
+{
+   struct symtab *new;
+   new = last_entry(start);
+   int id;
+   if(new == start) {
+      new = start;
+      id = 0;
+   }
+   else {
+      new = malloc(sizeof(struct symtab));
+      id = last_entry(start) -> id;
+      last_entry(start) -> next = new;
+   }
+   new -> id = id + 1;
+   new -> name = name;
+       new -> type = type;
+   new -> next = NULL;
+}
+
+struct symtab *find_entry(char* name, struct symtab *start)
+{
+   struct symtab *p;
+   p = start;
+   while( p != NULL) {
+      if(strcmp(p -> name, name) == 0) {
+         return p;
+      }
+   }
+}
+
 
 
 
