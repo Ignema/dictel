@@ -13,7 +13,7 @@ acf = '}'
 
 # ** La grammaire P **:
 
-S => ADD { ADD }
+PROGRAM => ADD { ADD }
 ADD => add ( ID KIND VALUE TYPE STATE ALLOCATE  USE RUN )
 ----------------------------------------------------------
 KIND  => epsilon | ,kind=" K
