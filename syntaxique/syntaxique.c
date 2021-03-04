@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "main.h"
+#include "mainA.h"
 #include "syntaxique.h"
 
     /**< LES MOTS CLES */
@@ -46,15 +46,15 @@
 
     char token_courant[20];
 
-void Token_Suiv(){
-
+void Token_Suiv()
+{
     /**< Récupérer le token suivant */
     num_token_courant++ ;
     token_courant = tableauToken[num_token_courant].code ;
 }
 
-void Test_Symbole (char * classe_lexical, char * COD_ERR){
-
+void Test_Symbole (char * classe_lexical, char * COD_ERR)
+{
 	if (strcmp(classe_lexical, tableauToken[num_token_courant].code)==0){
         Token_Suiv();
     }
@@ -64,7 +64,7 @@ void Test_Symbole (char * classe_lexical, char * COD_ERR){
     }
 }
 
-void PROGRAM()
+void ADD()
 {
     /**< Initialiser la taille de la table des symboles */
     t_tableau_des_symboles = 0;
@@ -73,19 +73,24 @@ void PROGRAM()
     {
         Test_Symbole(ADD_TOKEN, "ADD_ERR");
         Test_Symbole(PO_TOKEN, "PO_ERR");
-        BLOCK();
+        
+        if (strcmp(token_courant, ID_TOKEN)==0){
+
+            Test_Symbole(ID_TOKEN, "ID_ERR");
+            KIND();
+            VALUE();
+            TYPE();
+            STATE();
+            ALLOCATE();
+            USE();
+            RUN();
+        }
+            
+        else if (strcmp(token_courant, MAIN_TOKEN)==0)
+            MAIN();
+
         Test_Symbole(PF_TOKEN, "PF_ERR");
     }
-}
-
-void BLOCK()
-{
-    if (strcmp(token_courant, MAIN_TOKEN)==0)
-        MAIN();
-    else if (strcmp(token_courant, ID_TOKEN)==0)
-        TYPEVAR() // KEY VALUE TYPE STATE ALLOCATE 
-    else
-        ;
 }
 
 void MAIN()
@@ -93,7 +98,7 @@ void MAIN()
     Test_Symbole(MAIN_TOKEN, "MAIN_ERR");
     Test_Symbole(VIR_TOKEN, "VIR_ERR");
     FUNCTION();
-}
+}  
 
 void FUNCTION()
 {
@@ -126,61 +131,172 @@ void PARMS()
         Erreur("PARMS_PF_ERR");
 }
 
-void TYPEVAR()
+void KIND()
 {
-    Test_Symbole(ID_TOKEN, "ID_ERR");
-    KIND();
-    VALUE();
-    TYPE();
-    STATE();
-    ALLOCATE();
-}
-
-void KIND(){
     if (strcmp(token_courant, VIR_TOKEN)==0)
     {
         Test_Symbole(VIR_TOKEN, "VIR_ERR");
 
-        if (strcmp(token_courant, KIND_TOKEN)==0)
+        if (strcmp(token_courant, KIND_TOKEN)==0){
+
             Test_Symbole(KIND_TOKEN, "KIND_ERR");
-        else if (strcmp(token_courant, PO_TOKEN)==0)
-            FUNCTION(); /**< || IFDEF ||  FORDEF ||  STRUCT  confler */
-        else if (strcmp(token_courant, MRO_TOKEN)==0) // [
-            {
-                Test_Symbole(MRO_TOKEN, "MRO_ERR"); // ]
-                ARRAY5();
-                Test_Symbole(MRF_TOKEN, "MRF_ERR"); // ]
+            Test_Symbole(EG_TOKEN, "EG_ERR");
+            Test_Symbole(CT_TOKEN, "CT_ERR");
+
+            if(strcmp(token_courant, IF_TOKEN)==0){
+                Token_Suiv();
+                Test_Symbole(CT_TOKEN, "CT_ERR");
+                Test_Symbole(VIR_TOKEN, "VIR_ERR");
+                IFDEF();
+            }    
+            else if(strcmp(token_courant, FOR_TOKEN)==0){
+                Token_Suiv();
+                Test_Symbole(CT_TOKEN, "CT_ERR");
+                Test_Symbole(VIR_TOKEN, "VIR_ERR");
+                FORDEF();
+            } 
+            else if(strcmp(token_courant, FUNCTION_TOKEN)==0){
+                Token_Suiv();
+                Test_Symbole(CT_TOKEN, "CT_ERR");
+                Test_Symbole(VIR_TOKEN, "VIR_ERR");
+                FUNCTION();
             }
-        else if(strcmp(token_courant, /*expr*/)==0)   
-            EXPR();
-        else ;
+            else if(strcmp(token_courant, WHEN_TOKEN)==0){
+                Token_Suiv();
+                Test_Symbole(CT_TOKEN, "CT_ERR");
+                Test_Symbole(VIR_TOKEN, "VIR_ERR");
+                SWITCHDEF();
+            }
+            else if(strcmp(token_courant, STRUCT_TOKEN)==0){
+                Token_Suiv();
+                Test_Symbole(CT_TOKEN, "CT_ERR");
+                Test_Symbole(VIR_TOKEN, "VIR_ERR");
+                STRUCT();
+            }
+            else 
+                Erreur("KIND_IN_ERR");
+        }
+        else ;        
     }
     else ;
 }
 
-void VALUE(){
+void IFDEF()
+{
+    Test_Symbole(PO_TOKEN, "PO_ERR");
+    CONDITION();
+    Test_Symbole(PF_TOKEN, "PF_ERR");
+
+    Test_Symbole(INTEROGATION_TOKEN, "INTEROGATION_ERR");
+
+    Test_Symbole(ACO_TOKEN, "ACO_ERR");
+    INSTS();
+    Test_Symbole(ACF_TOKEN, "ACF_ERR");
+
+    Test_Symbole(DP_TOKEN, "DP_ERR");
+
+    Test_Symbole(ACO_TOKEN, "ACO_ERR");
+    INSTS();
+    Test_Symbole(ACF_TOKEN, "ACF_ERR");
+}
+
+void FORDEF()
+{
+    Test_Symbole(PO_TOKEN, "PO_ERR");
+    Test_Symbole(ID_TOKEN, "ID_ERR");
+    Test_Symbole(PF_TOKEN, "PF_ERR");
+
+    // =>
+    Test_Symbole(EG_TOKEN, "EG_ERR");
+    Test_Symbole(SUP_TOKEN, "SUP_ERR");
+
+    Test_Symbole(ACO_TOKEN, "ACO_ERR");
+    INSTS();
+    Test_Symbole(ACF_TOKEN, "ACF_ERR");
+}
+
+void STRUCT()
+{
+    AFFEC();
+    while (strcmp(token_courant, VIR_TOKEN)==0){
+        Test_Symbole(VIR_TOKEN, "VIR_ERR");
+        AFFEC();
+    };
+    Test_Symbole(PF_TOKEN, "PF_ERR");
+
+    // =>
+    Test_Symbole(EG_TOKEN, "EG_ERR");
+    Test_Symbole(SUP_TOKEN, "SUP_ERR");
+
+    Test_Symbole(ACO_TOKEN, "ACO_ERR");
+    Test_Symbole(ID_TOKEN, "ID_ERR");
+    Test_Symbole(FLECH_TOKEN, "FLECH_ERR");
+    TYPES();
+    while (strcmp(token_courant, ID_TOKEN)==0){
+        Test_Symbole(ID_TOKEN, "ID_ERR");
+        Test_Symbole(FLECH_TOKEN, "FLECH_ERR");
+        TYPES();
+    };
+    Test_Symbole(ACF_TOKEN, "ACF_ERR");
+}
+
+void SWITCHDEF()
+{
+    Test_Symbole(PO_TOKEN, "PO_ERR");
+    Test_Symbole(ID_TOKEN, "ID_ERR");
+    Test_Symbole(PF_TOKEN, "PF_ERR");
+
+    // =>
+    Test_Symbole(EG_TOKEN, "EG_ERR");
+    Test_Symbole(SUP_TOKEN, "SUP_ERR");
+
+    Test_Symbole(ACO_TOKEN, "ACO_ERR");
+    INSTS();
+    Test_Symbole(ACF_TOKEN, "ACF_ERR");
+}
+
+void VALUE()
+{
     if (strcmp(token_courant, VIR_TOKEN)==0)
     {
         Test_Symbole(VIR_TOKEN, "VIR_ERR");
 
-        if (strcmp(token_courant, NUM_TOKEN)==0)
+        if (strcmp(token_courant, NUM_TOKEN)==0){
             Test_Symbole(NUM_TOKEN, "NUM_ERR");
-        else if (strcmp(token_courant, PO_TOKEN)==0)
-            FUNCTION(); /**< || IFDEF ||  FORDEF ||  STRUCT  confler */
+            if (strcmp(token_courant, PT_TOKEN)==0){ //Range
+                Test_Symbole(PT_TOKEN, "PT_ERR");
+                Test_Symbole(PT_TOKEN, "PT_ERR");
+                Test_Symbole(NUM_TOKEN, "NUM_ERR");
+            }
+        }
         else if (strcmp(token_courant, MRO_TOKEN)==0) // [
             {
                 Test_Symbole(MRO_TOKEN, "MRO_ERR"); // ]
                 ARRAY5();
                 Test_Symbole(MRF_TOKEN, "MRF_ERR"); // ]
             }
-        else if(strcmp(token_courant, /*expr*/)==0)   
+        else if(strcmp(token_courant, ID_TOKEN)==0)   
             EXPR();
         else ;
     }
     else ;
+}                                      
+
+void ARRAY()
+{
+    if(strcmp(token_courant, ID_TOKEN)==0)
+    {
+        EXPR();
+        while (strcmp(token_courant, VIR_TOKEN)==0){
+            Test_Symbole(VIR_TOKEN, "VIR_ERR");
+            EXPR();
+        };
+    }
+    else ;
 }
 
-void TYPE(){
+void TYPE()
+{
     if (strcmp(token_courant, VIR_TOKEN)==0)
     {
         Test_Symbole(VIR_TOKEN, "VIR_ERR");
@@ -192,83 +308,16 @@ void TYPE(){
             if(strcmp(token_courant, PIPE_TOKEN)==0)
                 Token_Suiv();
             else 
-                verifierType();
+                TYPES();
         }
         else ;
     }
     else ;
 }
-
-void STATE(){
-    if (strcmp(token_courant, VIR_TOKEN)==0)
-    {
-        Test_Symbole(VIR_TOKEN, "VIR_ERR");
-
-        if (strcmp(token_courant, STATE_TOKEN)==0)
-        {
-            Test_Symbole(STATE_TOKEN, "STATE_ERR");
-                
-            if (strcmp(token_courant, IMMUTABLE_TOKEN)==0)
-                Test_Symbole(IMMUTABLE_TOKEN, "IMMUTABLE_ERR"); // Pour accée à token suivant
-            if (strcmp(token_courant, NONNULLABLE_TOKEN)==0)
-                Test_Symbole(NONNULLABLE_TOKEN, "NONNULLABLE_ERR");
-            if (strcmp(token_courant, NULLABLE_TOKEN)==0)
-                Test_Symbole(NULLABLE_TOKEN, "NULLABLE_ERR");
-
-            else Erreur("STATE_IN_ERR");
-        }
-        else ;
-    }
-    else ;
-}
-
-void ALLOCATE(){
-    if (strcmp(token_courant, VIR_TOKEN)==0)
-    {
-        Test_Symbole(VIR_TOKEN, "VIR_ERR");
-
-        if (strcmp(token_courant, ALLOCATE_TOKEN)==0)
-        {
-            Test_Symbole(ALLOCATE_TOKEN, "ALLOCATE_ERR");
-
-            Test_Symbole(EG_TOKEN, "EG_ERR");
-            if (strcmp(token_courant, NUM_TOKEN)==0)
-                Test_Symbole(NUM_TOKEN, "NUM_ERR");
-            else 
-                Test_Symbole(ID_TOKEN, "ID_ERR");
-            Test_Symbole(MULT_TOKEN, "MULT_ERR");
-            Test_Symbole(SIZEOF_TOKEN, "SIZEOF_ERR");
-            Test_Symbole(PO_TOKEN, "PO_ERR");
-            verifierType();
-            Test_Symbole(PF_TOKEN, "PF_ERR");
-        }
-        else ;
-    }
-    else ;
-}
-
-void INST()
-{
-    if(strcmp(token_courant, ACO_TOKEN)==0)
-        INSTS();
-    else if(strcmp(token_courant, ID_TOKEN)==0)
-        AFFEC();
-    else if(strcmp(token_courant, IF_TOKEN)==0)
-        BLOCIF();
-    else if(strcmp(token_courant, WHILE_TOKEN)==0)
-        BLOCWHILE();
-    else if(strcmp(token_courant, FOR_TOKEN)==0)
-        BLOCFOR();
-    else if(strcmp(token_courant, READ_TOKEN)==0)
-        BLOCFOR();
-    else
-        ;
-}
-| WRITE | READ | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN | break | WHENINST | PARINST
 
 /**< vérifier si le type est un type valable ou non */
-void verifierType(){
-
+void TYPES()
+{
     if(strcmp(token_courant, VOID_TOKEN)==0)
         Token_Suiv();
     if(strcmp(token_courant, CHAR_TOKEN)==0)
@@ -291,6 +340,216 @@ void verifierType(){
         Token_Suiv();
     else 
         Erreur("TYPE_IN_ERR");
+}
+
+void STATE()
+{
+    if (strcmp(token_courant, VIR_TOKEN)==0)
+    {
+        Test_Symbole(VIR_TOKEN, "VIR_ERR");
+
+        if (strcmp(token_courant, STATE_TOKEN)==0)
+        {
+            Test_Symbole(STATE_TOKEN, "STATE_ERR");
+                
+            if (strcmp(token_courant, IMMUTABLE_TOKEN)==0)
+                Token_Suiv();
+            if (strcmp(token_courant, NONNULLABLE_TOKEN)==0)
+                Token_Suiv();
+            if (strcmp(token_courant, NULLABLE_TOKEN)==0)
+                Token_Suiv();
+            else 
+                Erreur("STATE_IN_ERR");
+        }
+        else ;
+    }
+    else ;
+}
+
+void ALLOCATE()
+{
+    if (strcmp(token_courant, VIR_TOKEN)==0)
+    {
+        Test_Symbole(VIR_TOKEN, "VIR_ERR");
+
+        if (strcmp(token_courant, ALLOCATE_TOKEN)==0)
+        {
+            Test_Symbole(ALLOCATE_TOKEN, "ALLOCATE_ERR");
+
+            Test_Symbole(EG_TOKEN, "EG_ERR");
+            if (strcmp(token_courant, NUM_TOKEN)==0)
+                Test_Symbole(NUM_TOKEN, "NUM_ERR");
+            else 
+                Test_Symbole(ID_TOKEN, "ID_ERR");
+
+            Test_Symbole(MULT_TOKEN, "MULT_ERR");
+            Test_Symbole(SIZEOF_TOKEN, "SIZEOF_ERR");
+            Test_Symbole(PO_TOKEN, "PO_ERR");
+            TYPES();
+            Test_Symbole(PF_TOKEN, "PF_ERR");
+        }
+        else ;
+    }
+    else ;
+}
+
+void USE()
+{
+    if (strcmp(token_courant, VIR_TOKEN)==0)
+    {
+        Test_Symbole(VIR_TOKEN, "VIR_ERR");
+
+        if (strcmp(token_courant, USE_TOKEN)==0)
+        {
+            Test_Symbole(USE_TOKEN, "USE_ERR");
+            Test_Symbole(EG_TOKEN, "EG_ERR");
+            Test_Symbole(NUM_TOKEN, "NUM_ERR");
+        }
+        else ;
+    }
+    else ;
+}
+
+void RUN()
+{
+    if (strcmp(token_courant, VIR_TOKEN)==0)
+    {
+        Test_Symbole(VIR_TOKEN, "VIR_ERR");
+
+        if (strcmp(token_courant, RUN_TOKEN)==0)
+        {
+            Test_Symbole(RUN_TOKEN, "RUN_ERR");
+            Test_Symbole(EG_TOKEN, "EG_ERR");
+
+            if (strcmp(token_courant, ASYNCHRONOUS_TOKEN)==0)
+                Token_Suiv();
+            if (strcmp(token_courant, SYNCHRONOUS_TOKEN)==0)
+                Token_Suiv();
+            else 
+                Erreur("RUN_IN_ERR");
+        }
+        else ;
+    }
+    else ;
+}
+
+void INSTS()
+{
+    Test_Symbole(ACO_TOKEN, "ACO_ERR");
+    INST();
+    while (strcmp(token_courant, ID_TOKEN)==0 || strcmp(token_courant, ADD_TOKEN)==0 || strcmp(token_courant, LOG_TOKEN)==0 || strcmp(token_courant, IF_TOKEN)==0 || strcmp(token_courant, WHILE_TOKEN)==0  || strcmp(token_courant, FOR_TOKEN)==0 || strcmp(token_courant, READ_TOKEN)==0 ){
+            Sym_SuivS();
+            INST();
+    }
+	//Test_Symbole(ACF_TOKEN, "ACF_ERR")  ;
+}
+
+void INST()
+{
+    if(strcmp(token_courant, ACO_TOKEN)==0)
+        INSTS();
+    else if(strcmp(token_courant, ADD_TOKEN)==0)
+        ADD();
+    else if(strcmp(token_courant, LOG_TOKEN)==0)
+        WRITE();
+    else if(strcmp(token_courant, ID_TOKEN)==0)
+        AFFEC();
+    else if(strcmp(token_courant, IF_TOKEN)==0)
+        BLOCIF();
+    else if(strcmp(token_courant, FOR_TOKEN)==0)
+        BLOCFOR();
+    else if(strcmp(token_courant, WHILE_TOKEN)==0)
+        BLOCWHILE();
+    else if(strcmp(token_courant, READ_TOKEN)==0)
+        BLOCFOR();
+    else if(strcmp(token_courant, WHEN_TOKEN)==0)
+        WHENINST();
+    else
+        ;
+}
+
+void AFFEC()
+{
+    Test_Symbole(ID_TOKEN, "ID_ERR");
+    Test_Symbole(EG_TOKEN, "EG_ERR");
+    READ();
+}
+
+void READ()
+{
+    if(strcmp(token_courant, ID_TOKEN)==0)
+        EXPR();
+    else if(strcmp(token_courant, SCAN_TOKEN)==0)
+        SCAN();
+}
+
+void BLOCIF()
+{
+    Test_Symbole(IF_TOKEN, "IF_ERR");
+    Test_Symbole(PO_TOKEN, "PO_ERR");
+    CONDITION();
+    Test_Symbole(PF_TOKEN, "PF_ERR");
+
+    if(strcmp(token_courant, ACO_TOKEN)==0){
+        Test_Symbole(ACO_TOKEN, "ACO_ERR");
+        INSTS();
+        Test_Symbole(ACF_TOKEN, "ACF_ERR");
+    }
+    else
+        INST();
+}
+
+void BLOCFOR()
+{
+    Test_Symbole(FOR_TOKEN, "IF_ERR");
+    Test_Symbole(PO_TOKEN, "PO_ERR");
+    AFFEC();
+    Test_Symbole(VIR_TOKEN, "VIR_ERR");
+    CONDITION();
+    Test_Symbole(VIR_TOKEN, "VIR_ERR");
+    INST();
+    Test_Symbole(PF_TOKEN, "PF_ERR");
+
+    if(strcmp(token_courant, ACO_TOKEN)==0){
+        Test_Symbole(ACO_TOKEN, "ACO_ERR");
+        INSTS();
+        Test_Symbole(ACF_TOKEN, "ACF_ERR");
+    }
+    else
+        INST();
+}
+
+void BLOCWHILE()
+{
+    Test_Symbole(WHILE_TOKEN, "WHILE_ERR");
+    Test_Symbole(PO_TOKEN, "PO_ERR");
+    CONDITION();
+    Test_Symbole(PF_TOKEN, "PF_ERR");
+
+    if(strcmp(token_courant, ACO_TOKEN)==0){
+        Test_Symbole(ACO_TOKEN, "ACO_ERR");
+        INSTS();
+        Test_Symbole(ACF_TOKEN, "ACF_ERR");
+    }
+    else
+        INST();
+}
+
+void WRITE()
+{
+    Test_Symbole(LOG_TOKEN, "LOG_ERR");
+    Test_Symbole(PO_TOKEN, "PO_ERR");
+    
+    // WRITE  => log( " { {ID|symbole|chiffre} aco $ aco ID acf {chaine}  } " | ID )
+
+    EXPR();
+
+    while (strcmp(token_courant, VIR_TOKEN)==0){
+        Test_Symbole(VIR_TOKEN, "VIR_ERR");
+        EXPR();
+    };
+
+    Test_Symbole(PF_TOKEN, "PF_ERR");
 }
 
 void Erreur(char * COD_ERR){
