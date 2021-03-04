@@ -555,7 +555,8 @@ void BLOCWHILE()
         INST();
 }
 
-//WRITE  => log( " { {ID|symbole|chiffre} /aco/ $ aco ID acf {chaine} } " | ID )
+//WRITE  => log( " { {ID|symbole|chiffre} aco $ aco ID acf {ID|symbole|chiffre}  } " | ID )
+
 void WRITE(){
 
 	Test_Symbole(LOG_TOKEN, LOG_ERR);
@@ -574,25 +575,26 @@ void WRITE(){
                 Token_Suiv();
             }
 
-            if (strcmp(token_courant.code, DOLLAR_TOKEN)==0){
-
+            if (strcmp(token_courant.code, ACO_TOKEN)==0){
+            	Test_Symbole(ACO_TOKEN, ACO_ERR);
 	            Test_Symbole(DOLLAR_TOKEN, DOLLAR_ERR);
 	            Test_Symbole(ACO_TOKEN, ACO_ERR);
 	            Test_Symbole(ID_TOKEN, ID_ERR);
 	            Test_Symbole(ACF_TOKEN, ACF_ERR);
             }
 
-            while(token_courant.code == CHAIN_TOKEN){  
+            while(token_courant.code == ID_TOKEN || token_courant.code == SYMB_TOKEN || token_courant.code == CHIFF_TOKEN){
                 Token_Suiv();
             }
 
             Test_Symbole(GUI_TOKEN, GUI_ERR);
-            Test_Symbole(PF_TOKEN, PF_ERR);
 			break;
 		
         default :
             afficher_Erreur(LOG_ERR);
             break;
+
+    Test_Symbole(PF_TOKEN, PF_ERR);
 }
 
 void WHENINST()
