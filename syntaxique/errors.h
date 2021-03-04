@@ -55,7 +55,7 @@ typedef enum
     SYNC_ERR,
     ASYNC_ERR,
     SIZEOF_ERR,
-    ALLOCATE_ERR,
+    ALLOCAT_ERR,
     BREAK_ERR,
     FLECH_ERR,
     LOG_ERR,
@@ -79,7 +79,9 @@ typedef enum
     COND_ERR,
     ADDOP_ERR,
     MULOP_ERR,
-    FACT_ERR
+    FACT_ERR,
+    CRO_ERR,
+    CRF_ERR
 
 
 } ERREUR_TOKENS;

@@ -2,7 +2,7 @@
 #define SYNTAXIQUE_H_INCLUDED
 
     void Token_Suiv();
-    Test_Symbole(CODES_TOKENS cl, char * COD_ERR);
+    void Test_Symbole(CODES_TOKENS cl, char * COD_ERR);
 
     void ADD();
     void MAIN();
