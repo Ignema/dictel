@@ -48,7 +48,7 @@ TYPES => void | char | short | int | long | float | double | signed | unsigned |
 INSTS =>  INST { INST } 
 INST  => epsilon | WRITE | READ | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN | break | WHENINST | PARINST
 ----------------------------------------------------------
-WRITE  => log( " { {ID|symbole|chiffre} aco $ aco ID acf {chaine}  } " | ID )
+WRITE  => log( " { {ID|symbole|chiffre} aco $ aco ID acf {ID|symbole|chiffre}  } " | ID )
 
 BLOCIF  => if ( CONDITION ) aco INSTS acf
 	=> CONDITION ? aco INSTS acf : aco INSTS acf
