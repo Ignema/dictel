@@ -1,17 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #ifndef SYNTAXIQUE_H_INCLUDED
 #define SYNTAXIQUE_H_INCLUDED
 
-    typedef struct { 
-        char code[20];
-        char valueu[20];
-    } token_courant;
-
     void Token_Suiv();
-    void Test_Symbole (char* cl, char* COD_ERR);
+    Test_Symbole(CODES_TOKENS cl, char * COD_ERR);
 
     void ADD();
     void MAIN();

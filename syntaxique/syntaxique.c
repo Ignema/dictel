@@ -2,47 +2,23 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "mainA.h"
+#include "main.h"
 #include "syntaxique.h"
 
-    /**< LES MOTS CLES */
-    char * PROGRAM_TOKEN = "PROGRAM_TOKEN";
-    char * CONST_TOKEN = "CONST_TOKEN";
-    char * VAR_TOKEN = "VAR_TOKEN";
-    char * BEGIN_TOKEN = "BEGIN_TOKEN";
-    char * END_TOKEN = "END_TOKEN";
-    char * IF_TOKEN = "IF_TOKEN";
-    char * THEN_TOKEN = "THEN_TOKEN";
-    char * WHILE_TOKEN = "WHILE_TOKEN";
-    char * DO_TOKEN = "DO_TOKEN";
-    char * READ_TOKEN = "READ_TOKEN";
-    char * WRITE_TOKEN = "WRITE_TOKEN";
+typedef struct { 
+    char code[20];
+    char valueu[20];
+} token_courant;
 
-    /**< LES SYMBOLES SPECIAUX */
-    char * PV_TOKEN = "PV_TOKEN";
-    char * PT_TOKEN = "PT_TOKEN";
-    char * PLUS_TOKEN = "PLUS_TOKEN";
-    char * MOINS_TOKEN = "MOINS_TOKEN";
-    char * MULT_TOKEN = "MULT_TOKEN";
-    char * DIV_TOKEN = "DIV_TOKEN";
-    char * VIR_TOKEN = "VIR_TOKEN";
-    char * AFF_TOKEN = "AFF_TOKEN";
-    char * INF_TOKEN = "INF_TOKEN";
-    char * INFEG_TOKEN = "INFEG_TOKEN";
-    char * SUP_TOKEN = "SUP_TOKEN";
-    char * SUPEG_TOKEN = "SUPEG_TOKEN";
-    char * DIFF_TOKEN = "DIFF_TOKEN";
-    char * PO_TOKEN = "PO_TOKEN";
-    char * PF_TOKEN = "PF_TOKEN";
-    char * EG_TOKEN = "EG_TOKEN";
+typedef enum {
+    ID_TOKEN,NUM_TOKEN,ACF_TOKEN,ACO_TOKEN,VIR_TOKEN,PLUS_TOKEN,MOINS_TOKEN,MULT_TOKEN,DIV_TOKEN,
+    EG_TOKEN,DIFF_TOKEN,INF_TOKEN,SUP_TOKEN,INFG_TOKEN,SUPEG_TOKEN,INTEROGATION_TOKEN,VOID_TOKEN,CHAR_TOKEN,SHORT_TOKEN,
+    INT_TOKEN,FLOAT_TOKEN,LONG_TOKEN,DOUBLE_TOKEN,SIGNED_TOKEN,UNSIGNED_TOKEN,STRING_TOKEN,PIPE_TOKEN,TYPE_TOKEN,
+    DCO_TOKEN,IMMUT_TOKEN,NUMMUT_TOKEN,NULL_TOKEN,IF_TOKEN,FOR_TOKEN,WHEN_TOKEN,WHILE_TOKEN,STRUCT_TOKEN,USE_TOKEN,
+    RUN_TOKEN,SYNC_TOKEN,ASYNC_TOKEN,SIZEOF_TOKEN,ALLOCAT_TOKEN,BREAK_TOKEN,FLECH_TOKEN,LOG_TOKEN,SCAN_TOKEN,DPNT_TOKEN,
+    DBPNT_TOKEN,RETURN_TOKEN,PARAMS_TOKEN,PF_TOKEN,PO_TOKEN,ADD_TOKEN,ERREUR_TOKEN,EOF_TOKEN
 
-    /**< LES REGLES LEXICALES */
-    char * ID_TOKEN = "ID_TOKEN";
-    char * NUM_TOKEN = "NUM_TOKEN";
-
-    /**< nouvaeu TOKEN */
-    char * ACO_TOKEN = "ACO_TOKEN";
-    char * ACF_TOKEN = "ACF_TOKEN";
+} CODES_TOKENS ;
 
 void Token_Suiv()
 {
@@ -51,15 +27,13 @@ void Token_Suiv()
     token_courant.code = tableauToken[num_token_courant].code ;
 }
 
-void Test_Symbole (char * classe_lexical, char * COD_ERR)
+void Test_Symbole(CODES_TOKENS cl, char * COD_ERR)
 {
-	if (strcmp(classe_lexical, tableauToken[num_token_courant].code)==0){
+    if (token_courant.CODE == cl){
         Token_Suiv();
     }
-    else{
-        printf("\nErreur de type : %s\n",COD_ERR);
-        abort();
-    }
+    else
+        Erreur(COD_ERR);
 }
 
 void ADD()
