@@ -41,5 +41,9 @@
     void BLOCIF();
     void BLOCFOR();
     void BLOCWHILE();
+    void WRITE();
+    void WHENINST();
+    void RETURN();
+    void PARINST();
 
 #endif
