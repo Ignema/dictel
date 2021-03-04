@@ -8,7 +8,7 @@ void Test_Symbole(CODES_TOKENS cl, ERREUR_TOKENS COD_ERR);
 
 
 void FACT();
-void MULOP()
+void MULOP();
 void TERM();
 void ADDOP();
 void EXP();
