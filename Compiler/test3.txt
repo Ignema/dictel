@@ -1,5 +1,5 @@
 add(main,kind="function", () => {
     add(x,7,type="int",state="immutable")
-    add(carre,kind="function",() => { return x*x },run="asynchron")
-    log(x)
+    add(carre,kind="function",(x) => { return x*x },run="asynchron")
+    log("le carre est : ${x}")
 })

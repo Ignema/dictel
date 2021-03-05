@@ -638,21 +638,17 @@ void WRITE()
     }
     else if(token_courant.code == GUI_TOKEN){
         Test_Symbole(GUI_TOKEN, GUI_ERR);
-        
-        while(token_courant.code == ID_TOKEN || token_courant.code == NUM_TOKEN){
-            Token_Suiv();
-        }
 
-        if (token_courant.code == DOLLAR_TOKEN){
+        while(token_courant.code != GUI_TOKEN ){
+            if (token_courant.code == DOLLAR_TOKEN){
 
-            Test_Symbole(DOLLAR_TOKEN, DOLLAR_ERR);
-            Test_Symbole(ACO_TOKEN, ACO_ERR);
-            Test_Symbole(ID_TOKEN, ID_ERR);
-            Test_Symbole(ACF_TOKEN, ACF_ERR);
-        }
-
-        while(token_courant.code == ID_TOKEN || token_courant.code == NUM_TOKEN){
-            Token_Suiv();
+                Test_Symbole(DOLLAR_TOKEN, DOLLAR_ERR);
+                Test_Symbole(ACO_TOKEN, ACO_ERR);
+                Test_Symbole(ID_TOKEN, ID_ERR);
+                Test_Symbole(ACF_TOKEN, ACF_ERR);
+            }
+            else
+                Token_Suiv();
         }
 
         Test_Symbole(GUI_TOKEN, GUI_ERR);
