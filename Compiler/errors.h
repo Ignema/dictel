@@ -68,7 +68,6 @@ typedef enum
     PO_ERR,
     ADD_ERR,
     EOF_ERR,
-    MAIN_ERR,
     KIND_ERR,
     GUI_ERR,
     TYPE_ERR,

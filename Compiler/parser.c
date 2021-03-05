@@ -353,11 +353,15 @@ void TYPE()
     if (token_courant.code == TYPE_TOKEN)
     {
         Test_Symbole(TYPE_TOKEN, TYPE_ERR);
-        
+        Test_Symbole(EG_TOKEN, EG_ERR);
+        Test_Symbole(GUI_TOKEN, GUI_ERR);
+
         if(token_courant.code == PIPE_TOKEN)
             Token_Suiv();
         else 
             TYPES();
+
+        Test_Symbole(GUI_TOKEN, GUI_ERR);
     }
     else ;
 }
@@ -412,7 +416,7 @@ void STATE()
         Test_Symbole(STATE_TOKEN, STATE_ERR);
         Test_Symbole(EG_TOKEN, EG_ERR);
         Test_Symbole(GUI_TOKEN, GUI_ERR);
-        
+
         switch (token_courant.code)
         {   
         case IMMUT_TOKEN:
@@ -478,9 +482,9 @@ void RUN()
         Test_Symbole(GUI_TOKEN, GUI_ERR);
 
         if (token_courant.code == ASYNC_TOKEN)
-            Token_Suiv();
-        if (token_courant.code == SYNC_TOKEN)
-            Token_Suiv();
+            Test_Symbole(ASYNC_TOKEN, ASYNC_ERR);
+        else if (token_courant.code == SYNC_TOKEN)
+            Test_Symbole(SYNC_TOKEN, SYNC_ERR);
         else 
             afficher_Erreur(RUN_ERR);
 
