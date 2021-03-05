@@ -16,9 +16,13 @@ token token_courant;
 
 void Token_Suiv()
 {
-    /**< Récupérer le token suivant */
+    /**< Récupérer le token suivant du scanner */
     SYM_SUIV();
-    printf("%d %s\n",token_courant.code,scanner.SYMB_COUR.nom);
+
+    /**< Afficher le token courant */
+    //printf("%d %s\n",token_courant.code,scanner.SYMB_COUR.nom);
+
+    /**< Enregistré le token actuel dans token_courant */ 
     token_courant.code = scanner.SYMB_COUR.code ;
     strcpy(token_courant.nom,scanner.SYMB_COUR.nom);
 }
@@ -49,31 +53,33 @@ void ADD()
     Test_Symbole(ID_TOKEN, ID_ERR);
     Test_Symbole(VIR_TOKEN, VIR_ERR);
 
-//ERREUR
     if(token_courant.code == KIND_TOKEN){
         KIND();
         l = 1;
     }
-        
+    
+    /**< Vérifiez si KIND a été lu ou non */
     if(l == 1){
         l = 0;
         if(token_courant.code == VIR_TOKEN)
             Test_Symbole(VIR_TOKEN, VIR_ERR);
-        else if(token_courant.code == VIR_TOKEN)
+        else if(token_courant.code == PF_TOKEN)
             ;
         else 
             afficher_Erreur(VIR_ERR);
     }
 
-    if(token_courant.code == NUM_TOKEN){
+    if(token_courant.code == NUM_TOKEN || token_courant.code == CRO_TOKEN || token_courant.code == ID_TOKEN){  
         VALUE();
         l = 1;
     }
+
+    /**< Vérifiez si VALUE a été lu ou non */
     if(l == 1){
         l = 0;
         if(token_courant.code == VIR_TOKEN)
             Test_Symbole(VIR_TOKEN, VIR_ERR);
-        else if(token_courant.code == VIR_TOKEN)
+        else if(token_courant.code == PF_TOKEN)
             ;
         else 
             afficher_Erreur(VIR_ERR);
@@ -83,11 +89,13 @@ void ADD()
         TYPE();
         l = 1;
     }
+
+    /**< Vérifiez si TYPE a été lu ou non */
     if(l == 1){
         l = 0;
         if(token_courant.code == VIR_TOKEN)
             Test_Symbole(VIR_TOKEN, VIR_ERR);
-        else if(token_courant.code == VIR_TOKEN)
+        else if(token_courant.code == PF_TOKEN)
             ;
         else 
             afficher_Erreur(VIR_ERR);
@@ -97,11 +105,13 @@ void ADD()
         STATE();
         l = 1;
     }
+
+    /**< Vérifiez si STATE a été lu ou non */
     if(l == 1){
         l = 0;
         if(token_courant.code == VIR_TOKEN)
             Test_Symbole(VIR_TOKEN, VIR_ERR);
-        else if(token_courant.code == VIR_TOKEN)
+        else if(token_courant.code == PF_TOKEN)
             ;
         else 
             afficher_Erreur(VIR_ERR);
@@ -111,25 +121,29 @@ void ADD()
         USE();
         l = 1;
     }
+
+    /**< Vérifiez si USE a été lu ou non */
     if(l == 1){
         l = 0;
         if(token_courant.code == VIR_TOKEN)
             Test_Symbole(VIR_TOKEN, VIR_ERR);
-        else if(token_courant.code == VIR_TOKEN)
+        else if(token_courant.code == PF_TOKEN)
             ;
         else 
             afficher_Erreur(VIR_ERR);
     }        
 
-        if(token_courant.code == ALLOCAT_TOKEN){
+    if(token_courant.code == ALLOCAT_TOKEN){
         ALLOCATE();
         l = 1;
     }
+
+    /**< Vérifiez si ALLOCATE a été lu ou non */
     if(l == 1){
         l = 0;
         if(token_courant.code == VIR_TOKEN)
             Test_Symbole(VIR_TOKEN, VIR_ERR);
-        else if(token_courant.code == VIR_TOKEN)
+        else if(token_courant.code == PF_TOKEN)
             ;
         else 
             afficher_Erreur(VIR_ERR);
@@ -138,6 +152,7 @@ void ADD()
     RUN();
 
     Test_Symbole(PF_TOKEN, PF_ERR);
+
 }
 
 /**< FUNCTION => (PARMS) => aco INSTS acf  */
@@ -221,7 +236,7 @@ void KIND()
             break;
         }
     }
-    else ;      
+    else ;     
 }
 
 /**< IFDEF  => ( CONDITION ) ? aco INSTS acf  : aco INSTS acf */
@@ -300,14 +315,9 @@ void SWITCHDEF()
 /**< VALUE => epsilon | ,EXPR | [ARRAY] | NUM..NUM //range */
 void VALUE()
 {
-    if (token_courant.code == VIR_TOKEN)
-    {
-        Test_Symbole(VIR_TOKEN, VIR_ERR);
-printf("token0 cou: %s\n",scanner.SYMB_COUR.nom);
         if (token_courant.code == NUM_TOKEN){
-            printf("token1 cou: %s\n",scanner.SYMB_COUR.nom);
             Test_Symbole(NUM_TOKEN, NUM_ERR);
-            printf("token2 cou: %s\n",scanner.SYMB_COUR.nom);
+
             if (token_courant.code == DPNT_TOKEN){ //Range ..
                 Test_Symbole(DPNT_TOKEN, DPNT_ERR);
                 Test_Symbole(NUM_TOKEN, NUM_ERR);
@@ -322,8 +332,6 @@ printf("token0 cou: %s\n",scanner.SYMB_COUR.nom);
         else if(token_courant.code == ID_TOKEN)  
             EXPR();
         else ;
-    }
-    else ;
 }                                      
 
 void ARRAY()
@@ -341,20 +349,14 @@ void ARRAY()
 
 void TYPE()
 {
-    if (token_courant.code == VIR_TOKEN)
+    if (token_courant.code == TYPE_TOKEN)
     {
-        Test_Symbole(VIR_TOKEN, VIR_ERR);
-
-        if (token_courant.code == TYPE_TOKEN)
-        {
-            Test_Symbole(TYPE_TOKEN, TYPE_ERR);
-            
-            if(token_courant.code == PIPE_TOKEN)
-                Token_Suiv();
-            else 
-                TYPES();
-        }
-        else ;
+        Test_Symbole(TYPE_TOKEN, TYPE_ERR);
+        
+        if(token_courant.code == PIPE_TOKEN)
+            Token_Suiv();
+        else 
+            TYPES();
     }
     else ;
 }
@@ -404,33 +406,27 @@ void TYPES()
 /**< STATE => epsilon | , state = " immutable | nonNullable | nullable " */
 void STATE()
 {
-    if (token_courant.code == VIR_TOKEN)
+    if (token_courant.code == STATE_TOKEN)
     {
-        Test_Symbole(VIR_TOKEN, VIR_ERR);
+        Test_Symbole(STATE_TOKEN, STATE_ERR);
+        Test_Symbole(EG_TOKEN, EG_ERR);
+        Test_Symbole(GUI_TOKEN, GUI_ERR);
+        
+        switch (token_courant.code)
+        {   
+        case IMMUT_TOKEN:
+            break;
+        case NUMMUT_TOKEN:
+            break;
+        case NULL_TOKEN:
+            break;            
+        default:
+            afficher_Erreur(STATE_ERR);
+            break;
+        }   
+        Token_Suiv();
 
-        if (token_courant.code == STATE_TOKEN)
-        {
-            Test_Symbole(STATE_TOKEN, STATE_ERR);
-            Test_Symbole(EG_TOKEN, EG_ERR);
-            Test_Symbole(GUI_TOKEN, GUI_ERR);
-            
-            switch (token_courant.code)
-            {   
-            case IMMUT_TOKEN:
-                break;
-            case NUMMUT_TOKEN:
-                break;
-            case NULL_TOKEN:
-                break;            
-            default:
-                afficher_Erreur(STATE_ERR);
-                break;
-            }   
-            Token_Suiv();
-
-            Test_Symbole(GUI_TOKEN, GUI_ERR);
-        }
-        else ;
+        Test_Symbole(GUI_TOKEN, GUI_ERR);
     }
     else ;
 }
@@ -438,29 +434,23 @@ void STATE()
 /**< ALLOCATE => epsilon |, allocate = " chiffre * sizeof ( TYPES ) " */
 void ALLOCATE()
 {
-    if (token_courant.code == VIR_TOKEN)
+    if (token_courant.code == ALLOCAT_TOKEN)
     {
-        Test_Symbole(VIR_TOKEN, VIR_ERR);
+        Test_Symbole(ALLOCAT_TOKEN, ALLOCAT_ERR);
+        Test_Symbole(EG_TOKEN, EG_ERR);
+        Test_Symbole(GUI_TOKEN, GUI_ERR);
 
-        if (token_courant.code == ALLOCAT_TOKEN)
-        {
-            Test_Symbole(ALLOCAT_TOKEN, ALLOCAT_ERR);
-            Test_Symbole(EG_TOKEN, EG_ERR);
-            Test_Symbole(GUI_TOKEN, GUI_ERR);
+        if (token_courant.code == NUM_TOKEN)
+            Test_Symbole(NUM_TOKEN, NUM_ERR);
+        else 
+            Test_Symbole(ID_TOKEN, ID_ERR);
 
-            if (token_courant.code == NUM_TOKEN)
-                Test_Symbole(NUM_TOKEN, NUM_ERR);
-            else 
-                Test_Symbole(ID_TOKEN, ID_ERR);
-
-            Test_Symbole(MULT_TOKEN, MULT_ERR);
-            Test_Symbole(SIZEOF_TOKEN, SIZEOF_ERR);
-            Test_Symbole(PO_TOKEN, PO_ERR);
-            TYPES();
-            Test_Symbole(PF_TOKEN, PF_ERR);
-            Test_Symbole(GUI_TOKEN, GUI_ERR);
-        }
-        else ;
+        Test_Symbole(MULT_TOKEN, MULT_ERR);
+        Test_Symbole(SIZEOF_TOKEN, SIZEOF_ERR);
+        Test_Symbole(PO_TOKEN, PO_ERR);
+        TYPES();
+        Test_Symbole(PF_TOKEN, PF_ERR);
+        Test_Symbole(GUI_TOKEN, GUI_ERR);
     }
     else ;
 }
@@ -468,17 +458,11 @@ void ALLOCATE()
 /**< USE   => epsilon | , use = NUM  */
 void USE()
 {
-    if (token_courant.code == VIR_TOKEN)
+    if (token_courant.code == USE_TOKEN)
     {
-        Test_Symbole(VIR_TOKEN, VIR_ERR);
-
-        if (token_courant.code == USE_TOKEN)
-        {
-            Test_Symbole(USE_TOKEN, USE_ERR);
-            Test_Symbole(EG_TOKEN, EG_ERR);
-            Test_Symbole(NUM_TOKEN, NUM_ERR);
-        }
-        else ;
+        Test_Symbole(USE_TOKEN, USE_ERR);
+        Test_Symbole(EG_TOKEN, EG_ERR);
+        Test_Symbole(NUM_TOKEN, NUM_ERR);
     }
     else ;
 }
@@ -486,26 +470,20 @@ void USE()
 // RUN   => epsilon | , run=" asynchronous || synchronous"
 void RUN()
 {
-    if (token_courant.code == VIR_TOKEN)
+    if (token_courant.code == RUN_TOKEN)
     {
-        Test_Symbole(VIR_TOKEN, VIR_ERR);
+        Test_Symbole(RUN_TOKEN, RUN_ERR);
+        Test_Symbole(EG_TOKEN, EG_ERR);
+        Test_Symbole(GUI_TOKEN, GUI_ERR);
 
-        if (token_courant.code == RUN_TOKEN)
-        {
-            Test_Symbole(RUN_TOKEN, RUN_ERR);
-            Test_Symbole(EG_TOKEN, EG_ERR);
-            Test_Symbole(GUI_TOKEN, GUI_ERR);
+        if (token_courant.code == ASYNC_TOKEN)
+            Token_Suiv();
+        if (token_courant.code == SYNC_TOKEN)
+            Token_Suiv();
+        else 
+            afficher_Erreur(RUN_ERR);
 
-            if (token_courant.code == ASYNC_TOKEN)
-                Token_Suiv();
-            if (token_courant.code == SYNC_TOKEN)
-                Token_Suiv();
-            else 
-                afficher_Erreur(RUN_ERR);
-
-            Test_Symbole(GUI_TOKEN, GUI_ERR);
-        }
-        else ;
+        Test_Symbole(GUI_TOKEN, GUI_ERR);
     }
     else ;
 }

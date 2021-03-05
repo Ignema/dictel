@@ -16,6 +16,10 @@ int main(int argc, char *argv[]) {
     Token_Suiv();
     PROGRAM();
 
-    printf("fin\n");
+    if (token_courant.code == EOF_TOKEN)
+	    printf("le programme est correcte!!! \n");
+    else
+        printf("fin de programme erronee!!!! \n");
+
     return 0;
 }
