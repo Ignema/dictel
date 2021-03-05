@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "errors.h": "c",
+        "scanner.h": "c",
+        "system_error": "c"
+    }
+}

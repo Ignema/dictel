@@ -6,7 +6,7 @@
 #define UNTITLED3_SCANNER_H
 
 #include <stdio.h>
-#include<string.h>
+#include <string.h>
 #include <ctype.h>
 
 typedef enum {
@@ -35,13 +35,16 @@ typedef struct {
     char CAR_COUR;//CARACTERE COURANT
     FILE * fluxSource;// FICHIER CODE SOURCE
 }Scanner;
+
 Scanner scanner;
+
 void CONSTRUCT_SCANNER(char *file_name);
+
 /***************FONCTIONS DE CATEGORIES**************************************/
+
 void LIRE_CAR();
 void SYM_SUIV();
 int IS_SEPARATOR();
 void AFFICHER_TOKEN(SYMBOLES symbole);
-
 
 #endif //UNTITLED3_SCANNER_H

@@ -45,7 +45,7 @@ void SYM_SUIV(){
         scanner.SYMB_COUR.code=NUM_TOKEN;
         //AFFICHER_TOKEN(scanner.SYMB_COUR);
         //continue;
-        printf("\n");
+        //printf("\n");
         //add_entry(&scanner.SYMB_COUR,&list);
         //////SYM_SUIV();
         //return scanner.SYMB_COUR;
@@ -416,22 +416,19 @@ void CONSTRUCT_SCANNER(char *file_name){
     scanner.fluxSource = fopen(file_name,"r");
     if(scanner.fluxSource == NULL)
         printf("le fichier n'existe pas");
-    else{
-        printf("kolchi mzn\n");
-    }
+
     scanner.Eof = '\0';
 }
 
 /***************************************/
 void LIRE_CAR(){
     scanner.CAR_COUR = fgetc(scanner.fluxSource);
-    printf("%c",scanner.CAR_COUR);
+    //printf("%c",scanner.CAR_COUR);
     //scanner.SYMB_COUR.nom[0]=scanner.CAR_COUR;
     if(scanner.CAR_COUR  == EOF){
         scanner.CAR_COUR='\0';
-        printf("(fin de fichier)");
+        //printf("(fin de fichier)");
     }
-
 }
 
 int IS_SEPARATOR(){
@@ -439,7 +436,6 @@ int IS_SEPARATOR(){
         return 1;
     else
         return 0;
-
 }
 
 void AFFICHER_TOKEN(SYMBOLES symbole){

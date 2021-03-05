@@ -1,18 +1,21 @@
 #include "scanner.h"
+#include "parser.h"
+#include "errors.h"
 
-/*************************************/
+#include "errors.c"
+#include "scanner.c"
+#include "parser.c"
+
 /****************Main*****************/
 
 int main(int argc, char *argv[]) {
 
-    CONSTRUCT_SCANNER("../test9.txt");
+    CONSTRUCT_SCANNER("test1.txt");
     LIRE_CAR();
-    while(scanner.CAR_COUR!='\0'){
-    SYM_SUIV();
-    printf("\n*dep*\n");
-    AFFICHER_TOKEN(scanner.SYMB_COUR);
-        printf("\n*fin*\n");
-    }
 
+    Token_Suiv();
+    PROGRAM();
+
+    printf("fin\n");
     return 0;
 }

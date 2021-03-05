@@ -1,0 +1,5 @@
+add(main,kind="function", () => {
+    add(x,1)
+    add(y,3)
+    add(z,x+y)
+})
