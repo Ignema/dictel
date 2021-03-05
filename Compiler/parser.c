@@ -43,30 +43,98 @@ void PROGRAM()
 /**< ADD => add ( ID KIND VALUE TYPE STATE ALLOCATE  USE RUN ) */
 void ADD()
 {
+    int l = 0;
     Test_Symbole(ADD_TOKEN, ADD_ERR);
     Test_Symbole(PO_TOKEN, PO_ERR);
     Test_Symbole(ID_TOKEN, ID_ERR);
     Test_Symbole(VIR_TOKEN, VIR_ERR);
 
 //ERREUR
-    if(token_courant.code == KIND_TOKEN)
+    if(token_courant.code == KIND_TOKEN){
         KIND();
+        l = 1;
+    }
+        
+    if(l == 1){
+        l = 0;
+        if(token_courant.code == VIR_TOKEN)
+            Test_Symbole(VIR_TOKEN, VIR_ERR);
+        else if(token_courant.code == VIR_TOKEN)
+            ;
+        else 
+            afficher_Erreur(VIR_ERR);
+    }
 
-    VALUE();
-    if(token_courant.code == VIR_TOKEN)
-        Test_Symbole(VIR_TOKEN, VIR_ERR);
-    TYPE();
-    if(token_courant.code == VIR_TOKEN)
-        Test_Symbole(VIR_TOKEN, VIR_ERR);
-    STATE();
-    if(token_courant.code == VIR_TOKEN)
-        Test_Symbole(VIR_TOKEN, VIR_ERR);
-    ALLOCATE();
-    if(token_courant.code == VIR_TOKEN)
-        Test_Symbole(VIR_TOKEN, VIR_ERR);
-    USE();
-    if(token_courant.code == VIR_TOKEN)
-        Test_Symbole(VIR_TOKEN, VIR_ERR);
+    if(token_courant.code == NUM_TOKEN){
+        VALUE();
+        l = 1;
+    }
+    if(l == 1){
+        l = 0;
+        if(token_courant.code == VIR_TOKEN)
+            Test_Symbole(VIR_TOKEN, VIR_ERR);
+        else if(token_courant.code == VIR_TOKEN)
+            ;
+        else 
+            afficher_Erreur(VIR_ERR);
+    }
+
+    if(token_courant.code == TYPE_TOKEN){
+        TYPE();
+        l = 1;
+    }
+    if(l == 1){
+        l = 0;
+        if(token_courant.code == VIR_TOKEN)
+            Test_Symbole(VIR_TOKEN, VIR_ERR);
+        else if(token_courant.code == VIR_TOKEN)
+            ;
+        else 
+            afficher_Erreur(VIR_ERR);
+    }
+
+    if(token_courant.code == STATE_TOKEN){
+        STATE();
+        l = 1;
+    }
+    if(l == 1){
+        l = 0;
+        if(token_courant.code == VIR_TOKEN)
+            Test_Symbole(VIR_TOKEN, VIR_ERR);
+        else if(token_courant.code == VIR_TOKEN)
+            ;
+        else 
+            afficher_Erreur(VIR_ERR);
+    }
+
+    if(token_courant.code == USE_TOKEN){
+        USE();
+        l = 1;
+    }
+    if(l == 1){
+        l = 0;
+        if(token_courant.code == VIR_TOKEN)
+            Test_Symbole(VIR_TOKEN, VIR_ERR);
+        else if(token_courant.code == VIR_TOKEN)
+            ;
+        else 
+            afficher_Erreur(VIR_ERR);
+    }        
+
+        if(token_courant.code == ALLOCAT_TOKEN){
+        ALLOCATE();
+        l = 1;
+    }
+    if(l == 1){
+        l = 0;
+        if(token_courant.code == VIR_TOKEN)
+            Test_Symbole(VIR_TOKEN, VIR_ERR);
+        else if(token_courant.code == VIR_TOKEN)
+            ;
+        else 
+            afficher_Erreur(VIR_ERR);
+    }  
+
     RUN();
 
     Test_Symbole(PF_TOKEN, PF_ERR);
