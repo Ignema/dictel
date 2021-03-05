@@ -1,5 +1,5 @@
 
-Axiome : { S}
+Axiome : { PROGRAM }
 
 # **Some tokens definitions :**
 
