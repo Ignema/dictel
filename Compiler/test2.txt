@@ -1,0 +1,6 @@
+add(main,kind="function", () => {
+    add(x,1)
+    add(y,3)
+    y = x + 2
+    log(y)
+})

@@ -152,7 +152,6 @@ void ADD()
     RUN();
 
     Test_Symbole(PF_TOKEN, PF_ERR);
-
 }
 
 /**< FUNCTION => (PARMS) => aco INSTS acf  */
@@ -334,6 +333,7 @@ void VALUE()
         else ;
 }                                      
 
+/**< ARRAY =>  EXPR { , EXPR } | epsilon */
 void ARRAY()
 {
     if(token_courant.code == ID_TOKEN)
@@ -347,6 +347,7 @@ void ARRAY()
     else ;
 }
 
+/**< TYPE  => epsilon | , type = " TYPES {[]} " */
 void TYPE()
 {
     if (token_courant.code == TYPE_TOKEN)
@@ -467,7 +468,7 @@ void USE()
     else ;
 }
 
-// RUN   => epsilon | , run=" asynchronous || synchronous"
+/**< RUN   => epsilon | , run=" asynchronous || synchronous"  */
 void RUN()
 {
     if (token_courant.code == RUN_TOKEN)
@@ -488,9 +489,9 @@ void RUN()
     else ;
 }
 
+/**< INSTS =>  INST { INST } */
 void INSTS()
 {
-    //Test_Symbole(ACO_TOKEN, ACO_ERR);
     INST();
     while(token_courant.code == ID_TOKEN || token_courant.code == LOG_TOKEN || token_courant.code == IF_TOKEN || 
         token_courant.code == FOR_TOKEN || token_courant.code == WHILE_TOKEN || token_courant.code == ADD_TOKEN ||
@@ -498,9 +499,9 @@ void INSTS()
         token_courant.code == BREAK_TOKEN || token_courant.code == DEL_TOKEN){
         INST();
     }
-    //Test_Symbole(ACF_TOKEN, "ACF_ERR")  ;
 }
 
+/**< INST  => epsilon | WRITE | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN | break | WHENINST | PARINST | DELETEINST */
 void INST(){
 	switch(token_courant.code){
 
@@ -579,6 +580,7 @@ void READ(){
     }
 }
 
+/**< BLOCIF  => if ( CONDITION ) aco INSTS acf */
 void BLOCIF()
 {
     Test_Symbole(IF_TOKEN, IF_ERR);
@@ -586,16 +588,12 @@ void BLOCIF()
     CONDITION();
     Test_Symbole(PF_TOKEN, PF_ERR);
 
-    if(token_courant.code == ACO_TOKEN){
-        Test_Symbole(ACO_TOKEN, ACO_ERR);
-        INSTS();
-        Test_Symbole(ACF_TOKEN, ACF_ERR);
-    }
-    else
-        INST();
+    Test_Symbole(ACO_TOKEN, ACO_ERR);
+    INSTS();
+    Test_Symbole(ACF_TOKEN, ACF_ERR);
 }
 
-/**< BLOCFOR ⇒ for (AFFEC , CONDITION , INST) ajouter { aco INSTS acf | INST} */
+/**< BLOCFOR ⇒ for (AFFEC , CONDITION , INST) aco INSTS acf */
 void BLOCFOR()
 {
     Test_Symbole(FOR_TOKEN, FOR_ERR);
@@ -607,15 +605,12 @@ void BLOCFOR()
     INST();
     Test_Symbole(PF_TOKEN, PF_ERR);
 
-    if(token_courant.code == ACO_TOKEN){
-        Test_Symbole(ACO_TOKEN, ACO_ERR);
-        INSTS();
-        Test_Symbole(ACF_TOKEN, ACF_ERR);
-    }
-    else
-        INST();
+    Test_Symbole(ACO_TOKEN, ACO_ERR);
+    INSTS();
+    Test_Symbole(ACF_TOKEN, ACF_ERR);
 }
 
+/**< BLOCWHILE ⇒  while ( CONDITION ) aco INSTS acof */
 void BLOCWHILE()
 {
     Test_Symbole(WHILE_TOKEN, WHILE_ERR);
@@ -628,17 +623,16 @@ void BLOCWHILE()
     Test_Symbole(ACF_TOKEN, ACF_ERR);
 }
 
-//WRITE  => log( " { {ID|symbole|chiffre} aco $ aco ID acf {ID|symbole|chiffre}  } " | ID )
-void WRITE(){
-
+/**< WRITE  => log( " { {ID|symbole|chiffre} aco $ aco ID acf {ID|symbole|chiffre}  } " | ID ) */
+void WRITE()
+{
 	Test_Symbole(LOG_TOKEN, LOG_ERR);
 	Test_Symbole(PO_TOKEN, PO_ERR);
-
+    
     if(token_courant.code == ID_TOKEN){
         Test_Symbole(ID_TOKEN, ID_ERR);
-        Test_Symbole(PF_TOKEN, PF_ERR);
     }
-    if(token_courant.code == GUI_TOKEN){
+    else if(token_courant.code == GUI_TOKEN){
         Test_Symbole(GUI_TOKEN, GUI_ERR);
         
         while(token_courant.code == ID_TOKEN || token_courant.code == NUM_TOKEN){
@@ -658,10 +652,11 @@ void WRITE(){
         }
 
         Test_Symbole(GUI_TOKEN, GUI_ERR);
-        Test_Symbole(PF_TOKEN, PF_ERR);
     }
     else
         afficher_Erreur(LOG_ERR);
+
+    Test_Symbole(PF_TOKEN, PF_ERR);
 }
 
 /**< WHENINST => NUM -> INST */
@@ -727,7 +722,7 @@ void RELOP()
     Token_Suiv();   
 }
 
-//EXPR => TERM { ADDOP TERM }
+/**< EXPR => TERM { ADDOP TERM } */
 void EXPR(){
 
     TERM();
@@ -737,7 +732,7 @@ void EXPR(){
     }
 }
 
-//ADDOP => + | -
+/**< ADDOP => + | -  */
 void ADDOP(){
     switch (token_courant.code){
         case PLUS_TOKEN:
@@ -753,7 +748,7 @@ void ADDOP(){
     }
 }
 
-//TERM => FACT { MULOP FACT }
+/**< TERM => FACT { MULOP FACT } */
 void TERM(){
     FACT();
     if (token_courant.code == DIV_TOKEN || token_courant.code == MULT_TOKEN){
@@ -762,7 +757,7 @@ void TERM(){
     }
 }
 
-//MULOP => * | /
+/**< MULOP => * | /  */
 void MULOP(){
     switch (token_courant.code){
         case MULT_TOKEN:
@@ -778,7 +773,7 @@ void MULOP(){
     }
 }
 
-//FACT => ID | NUM | ( EXPR )
+/**< FACT => ID | NUM | ( EXPR ) */
 void FACT(){
     switch (token_courant.code){
         case ID_TOKEN:
