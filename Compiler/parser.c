@@ -644,7 +644,7 @@ void RELOP()
 void EXPR(){
 
     TERM();
-    if (token_courant.code == PLUS_TOKEN || token_courant.code == MOINS_TOKEN){
+    while(token_courant.code == PLUS_TOKEN || token_courant.code == MOINS_TOKEN){
         ADDOP();
         TERM();
     }

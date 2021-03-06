@@ -10,7 +10,7 @@
 
 int main(int argc, char *argv[]) {
 
-    CONSTRUCT_SCANNER("test4.txt");
+    CONSTRUCT_SCANNER("test5.txt");
     LIRE_CAR();
 
     Token_Suiv();

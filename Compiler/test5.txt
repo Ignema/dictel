@@ -1,0 +1,11 @@
+add(main,kind="function", () => {
+    add(x,1)
+    add(y,3)
+    
+    y = y + x + 1
+
+    if(y>x){
+        log(" ${x} est supprieur a ${y} ")
+    }
+        
+})
