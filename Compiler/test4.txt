@@ -1,0 +1,12 @@
+add(main,kind="function", () => {
+    
+    add(n,10,type="int",state="immutable")
+    
+    add(i)
+    
+    for(i=1,i<n,i = i + 1)
+    {
+        log("le valeur de i est : ${i}")
+    }
+    
+})
