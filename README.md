@@ -40,7 +40,7 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
 
 #### Création d'un variable avec un allocation dynamique(en octet)
 
-    add(monVariable, allocate=5*sizeof(int))
+    add(monVariable, allocate="5*sizeof(int)")
 
 #### Création d'un variable immutable(constante)
 
@@ -56,15 +56,15 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
 
 #### Création d'une fonction
 
-    add(maFonction, (monVariable) => {
+    add(maFonction, kind="function", (monVariable) => {
         monVariable = monVariable + 1
     })
 
 #### Création d'une fonction asynchrone
 
-    add(maFonction, (monVariable) => {
+    add(maFonction, kind="function", (monVariable) => {
         monVariable = monVariable + 1
-    }, run="asynchronous")
+    }, run="asynchron")
 
 #### Création d'un pipe
 
@@ -72,11 +72,11 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
 
 #### Création d'un bloc conditionnel
 
-    add(monIf, (condition) ? {
+    add(monIf, kind="if", (condition) ? {
         monVariable = monVariable + 1
     } : {
         monVariable = monVariable - 1
-    }, kind="if")
+    })
 
 #### Création d'un bloc itératif
 
