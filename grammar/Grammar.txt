@@ -64,7 +64,7 @@ DELETEINST => del ( ID )
 -----------------------------------------------------------------------------
 CONDITION  => EXPR RELOP EXPR
 RELOP => = | <> | < | > | <= | >=
-EXPR => TERM { ADDOP TERM }
+EXPR => TERM ( (PARAMS) || { ADDOP TERM } ) // (PARAMS) appel de fonction
 ADDOP => + | -
 TERM => FACT { MULOP FACT }
 MULOP => * | /
