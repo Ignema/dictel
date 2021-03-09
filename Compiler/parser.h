@@ -16,6 +16,7 @@
     void KIND();
     void IFDEF();
     void FORDEF();
+    void WHILEDEF();
     void STRUCT();
     void SWITCHDEF();
 

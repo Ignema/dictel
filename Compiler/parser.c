@@ -130,6 +130,13 @@ void KIND()
             FORDEF();
             break;
 
+        case WHILE_TOKEN:
+            Token_Suiv();
+            Test_Symbole(GUI_TOKEN, GUI_ERR);
+            Test_Symbole(VIR_TOKEN, VIR_ERR);
+            WHILEDEF();
+            break;
+
         case WHEN_TOKEN:
             Token_Suiv();
             Test_Symbole(GUI_TOKEN, GUI_ERR);
@@ -193,10 +200,26 @@ void FORDEF()
     Test_Symbole(ACF_TOKEN, ACF_ERR);
 }
 
+/**< (CONDITION) => aco INSTS acf */
+void WHILEDEF()
+{
+    Test_Symbole(PO_TOKEN, PO_ERR);
+    CONDITION();
+    Test_Symbole(PF_TOKEN, PF_ERR);
+    
+    Test_Symbole(EGSUP_TOKEN, EGSUP_ERR); // =>
+
+    Test_Symbole(ACO_TOKEN, ACO_ERR);
+    INSTS();
+    Test_Symbole(ACF_TOKEN, ACF_ERR);
+}
+
 /**< STRUCT   => ( AFFEC { , AFFEC} ) => aco ID -> TYPES { ID -> TYPES } acof   */
 void STRUCT()
 {
+    Test_Symbole(PO_TOKEN, PO_ERR);
     AFFEC();
+
     while (token_courant.code == VIR_TOKEN){
         Test_Symbole(VIR_TOKEN, VIR_ERR);
         AFFEC();
@@ -257,7 +280,7 @@ void VALUE()
 /**< ARRAY =>  EXPR { , EXPR } | epsilon */
 void ARRAY()
 {
-    if(token_courant.code == ID_TOKEN)
+    if(token_courant.code == ID_TOKEN || token_courant.code == NUM_TOKEN)
     {
         EXPR();
         while (token_courant.code == VIR_TOKEN){
@@ -326,7 +349,14 @@ void TYPES()
         afficher_Erreur(TYPE_ERR);
         break;
     }
-    Token_Suiv();       
+    Token_Suiv();    
+
+    while(token_courant.code == CRO_TOKEN){
+        Test_Symbole(CRO_TOKEN, CRO_ERR);
+        if(token_courant.code == ID_TOKEN || token_courant.code == NUM_TOKEN)
+            Token_Suiv();
+        Test_Symbole(CRF_TOKEN, CRF_ERR);
+    }   
 }
 
 /**< STATE => epsilon | , state = " immutable | nonNullable | nullable " */
@@ -342,9 +372,9 @@ void STATE()
         {   
         case IMMUT_TOKEN:
             break;
-        case NUMMUT_TOKEN:
+        case NONNULLABLE:
             break;
-        case NULL_TOKEN:
+        case NULLABLE_TOKEN:
             break;            
         default:
             afficher_Erreur(STATE_ERR);

@@ -1,6 +1,0 @@
-add(monIf, (condition) ? {
-monVariable = monVariable + 1
-} : {
-monVariable = monVariable - 1
-}, kind="if")
-

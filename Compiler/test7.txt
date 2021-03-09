@@ -1,0 +1,22 @@
+    add(maStructure, kind="struct", (monComposant1= 5, monComposant3= 65) => {
+        monComposant1 -> int
+        monComposant2 -> string
+        monComposant3 -> float
+        monComposant4 -> int[]
+    })
+
+add(main,kind="function", () => {
+    add(N,type="int[]")
+    add(i)
+    add(x,1,type="int")
+    
+    while(x<5){
+        for(i=0, i<6, i = i + 1){
+            if(i=3){
+                log(" milieu est 3")
+            }
+            log("la valeur de i est : ${i}")
+        }
+        x = x + 1
+    }   
+})

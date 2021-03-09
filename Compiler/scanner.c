@@ -6,7 +6,7 @@
 char *TOKEN_CLE[]={"ID_TOKEN","NUM_TOKEN","ACF_TOKEN","ACO_TOKEN","VIR_TOKEN","PLUS_TOKEN","MOINS_TOKEN","MULT_TOKEN","DIV_TOKEN",
                    "EG_TOKEN","DIFF_TOKEN","INF_TOKEN","SUP_TOKEN","INFG_TOKEN","SUPEG_TOKEN","INTEROGATION_TOKEN","VOID_TOKEN","CHAR_TOKEN","SHORT_TOKEN",
                    "INT_TOKEN","FLOAT_TOKEN","LONG_TOKEN","DOUBLE_TOKEN","SIGNED_TOKEN","UNSIGNED_TOKEN","STRING_TOKEN","PIPE_TOKEN","TYPE_TOKEN",
-                   "IMMUT_TOKEN","NUMMUT_TOKEN","NULL_TOKEN","IF_TOKEN","FOR_TOKEN","WHEN_TOKEN","WHILE_TOKEN","STRUCT_TOKEN","USE_TOKEN",
+                   "IMMUT_TOKEN","NONNULLABLE","NULLABLE_TOKEN","IF_TOKEN","FOR_TOKEN","WHEN_TOKEN","WHILE_TOKEN","STRUCT_TOKEN","USE_TOKEN",
                    "RUN_TOKEN","SYNC_TOKEN","ASYNC_TOKEN","SIZEOF_TOKEN","ALLOCAT_TOKEN","BREAK_TOKEN","FLECH_TOKEN","LOG_TOKEN","SCAN_TOKEN","DPNT_TOKEN",
                    "DBPNT_TOKEN","RETURN_TOKEN","PARAMS_TOKEN","PF_TOKEN","PO_TOKEN","ADD_TOKEN","ERREUR_TOKEN","EOF_TOKEN","FUNCTION_TOKEN",
                    "STATE_TOKEN","CRO_TOKEN","CRF_TOKEN","GUI_TOKEN","KIND_TOKEN","DOLLAR_TOKEN","EGSUP_TOKEN","DEL_TOKEN"
@@ -91,11 +91,11 @@ void SYM_SUIV(){
         }else if(strcmp(scanner.SYMB_COUR.nom,"add")==0){
             scanner.SYMB_COUR.code=ADD_TOKEN;
             //SYM_SUIV();
-        }else if(strcmp(scanner.SYMB_COUR.nom,"nonimmutable")==0){
-            scanner.SYMB_COUR.code=NUMMUT_TOKEN;
+        }else if(strcmp(scanner.SYMB_COUR.nom,"nonNullable")==0){
+            scanner.SYMB_COUR.code=NONNULLABLE;
             //SYM_SUIV();
-        }else if(strcmp(scanner.SYMB_COUR.nom,"null")==0){
-            scanner.SYMB_COUR.code=NULL_TOKEN;
+        }else if(strcmp(scanner.SYMB_COUR.nom,"nullable")==0){
+            scanner.SYMB_COUR.code=NULLABLE_TOKEN;
             //SYM_SUIV();
         }else if(strcmp(scanner.SYMB_COUR.nom,"immutable")==0){
             scanner.SYMB_COUR.code=IMMUT_TOKEN;
@@ -172,7 +172,7 @@ void SYM_SUIV(){
         }else if(strcmp(scanner.SYMB_COUR.nom,"kind")==0){
             scanner.SYMB_COUR.code=KIND_TOKEN;
             //SYM_SUIV();
-        }else if(strcmp(scanner.SYMB_COUR.nom,"delete")==0){
+        }else if(strcmp(scanner.SYMB_COUR.nom,"del")==0){
             scanner.SYMB_COUR.code=DEL_TOKEN;
             //SYM_SUIV();
         }
