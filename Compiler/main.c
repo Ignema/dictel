@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
     LIRE_CAR();
 
     Token_Suiv();
+
     PROGRAM();
 
     if (token_courant.code == EOF_TOKEN)

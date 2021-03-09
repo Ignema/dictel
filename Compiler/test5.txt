@@ -1,5 +1,5 @@
-add(main,kind="function", () => {
-    add(x,1)
+add(main, kind="function", () => {
+    add(x, 1, state="immutable")
     add(y,3)
     
     y = y + x + 1

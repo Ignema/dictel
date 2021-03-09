@@ -19,21 +19,20 @@ void Token_Suiv()
     /**< Récupérer le token suivant du scanner */
     SYM_SUIV();
 
-    /**< Afficher le token courant */
-    // printf("%d %s\n",token_courant.code,scanner.SYMB_COUR.nom);
-
     /**< Enregistré le token actuel dans token_courant */ 
     token_courant.code = scanner.SYMB_COUR.code ;
     strcpy(token_courant.nom,scanner.SYMB_COUR.nom);
+
+    /**< Afficher le token courant */
+    // printf("%d %s\n",token_courant.code,token_courant.nom);
 }
 
 void Test_Symbole(CODES_LEX cl, ERREUR_TOKENS COD_ERR)
 {
-    if (token_courant.code == cl){
+    if (token_courant.code == cl)
         Token_Suiv();
-    }
     else
-        afficher_Erreur(COD_ERR);
+        afficher_Erreur(COD_ERR);       
 }
 
 /**< Axiom S => ADD { ADD } */
@@ -47,7 +46,6 @@ void PROGRAM()
 /**< ADD => add ( ID KIND VALUE TYPE STATE ALLOCATE  USE RUN ) */
 void ADD()
 {
-    int l = 0;
     Test_Symbole(ADD_TOKEN, ADD_ERR);
     Test_Symbole(PO_TOKEN, PO_ERR);
     Test_Symbole(ID_TOKEN, ID_ERR);

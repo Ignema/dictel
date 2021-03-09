@@ -69,18 +69,21 @@ char *Erreur[] = {
     "ADD_ERR",
     "ERREUR_ERR",
     "EOF_ERR",
-    "MAIN_ERR",
     "KIND_ERR",
     "GUI_ERR",
-    "TYPE_ERR",
     "STATE_ERR",
-    "RUN_ERR",
     "READ_ERR",
     "DOLLAR_ERR",
     "COND_ERR",
     "ADDOP_ERR",
     "MULOP_ERR",
-    "FACT_ERR"};
+    "FACT_ERR"
+    "CRO_ERR",
+    "CRF_ERR",
+    "EGSUP_ERR" ,
+    "DEL_ERR",
+    "PAR_ERR"
+    };
 
 
 void afficher_Erreur(ERREUR_TOKENS ERR)
