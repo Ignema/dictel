@@ -80,25 +80,28 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
 
 #### Création d'un bloc itératif
 
-    add(monFor, (iterator) => {
+    add(monFor, kind="for", (iterator) => {
         monVariable = monVariable + 1
-    }, kind="for")
+    })
 
 #### Création d'un bloc itératif conditionnel
 
-    add(monWhile, (condition) => {
+    add(monWhile, kind="while", (condition) => {
         monVariable = monVariable + 1
-    }, kind="for")
+    })
 
 #### Remarque: On peut également utiliser le *for* et le *if* et le *while* traditionnel sans aucun problème
 
     while(condition){
-        for(int i=0; i<6; i++){
+        for(i=0, i<6, i=i+1){
             if(condition){
                 monVariable = monVariable + 1
-            } else {
+            }
+            /*
+            else {
                 monVariable = monVariable + 1
             }
+            */
         }
     }
 
@@ -112,21 +115,21 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
 
 #### Création d'un switch
 
-    add(monSwitch, (monNombre) => {
+    add(monSwitch, kind="when", (monNombre) => {
         1 -> monVariable = 1
         2 -> monVariable = 2
         3 -> monVariable = 3
-        _ -> monVariable = 0  // valeur par défaut
-    }, kind="when")
+        _ -> monVariable = 0  // valeur par défaut  // avoir
+    })
 
 #### Création d'une structure
 
-    add(maStructure, (monComposant1= 5, monComposant3= 6.5f) => {
+    add(maStructure, kind="struct", (monComposant1= 5, monComposant3= 65) => { // monComposant3= 6.5f
         monComposant1 -> int
         monComposant2 -> string
         monComposant3 -> float
         monComposant4 -> int[]
-    }, kind="struct")
+    })
 
 #### Modification d'un variable
 
@@ -158,7 +161,7 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
 
 ## Un exemple classique
 
-    add(main, ()=>{
+    add(main, kind="function", ()=>{
         log("Hello Ensias!")
     })
 
