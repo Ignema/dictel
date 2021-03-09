@@ -487,8 +487,8 @@ void AFFEC()
 }
 
 /**< READ => EXPR | scan() */
-void READ(){
-    
+void READ()
+{
     if(token_courant.code == ID_TOKEN || token_courant.code == NUM_TOKEN)
         EXPR();
     else if(token_courant.code == SCAN_TOKEN){
@@ -639,9 +639,26 @@ void RELOP()
 }
 
 /**< EXPR => TERM { ADDOP TERM } */
-void EXPR(){
-
+void EXPR()
+{
     TERM();
+
+    switch (token_courant.code)
+    {
+    case PO_TOKEN:
+        Test_Symbole(PO_TOKEN, PO_ERR);
+        PARMS();
+        Test_Symbole(PF_TOKEN, PF_ERR);
+        break;
+    
+    default:
+        while(token_courant.code == PLUS_TOKEN || token_courant.code == MOINS_TOKEN){
+            ADDOP();
+            TERM();
+        }
+        break;
+    }
+
     while(token_courant.code == PLUS_TOKEN || token_courant.code == MOINS_TOKEN){
         ADDOP();
         TERM();
@@ -649,7 +666,8 @@ void EXPR(){
 }
 
 /**< ADDOP => + | -  */
-void ADDOP(){
+void ADDOP()
+{
     switch (token_courant.code){
         case PLUS_TOKEN:
             Token_Suiv();
@@ -675,7 +693,8 @@ void TERM()
 }
 
 /**< MULOP => * | /  */
-void MULOP(){
+void MULOP()
+{
     switch (token_courant.code){
         case MULT_TOKEN:
             Token_Suiv();

@@ -405,7 +405,7 @@ void SYM_SUIV(){
             //LIRE_CAR();
             break;
         default:
-            printf("error5!!!");
+            printf("error5!!!\n");
     }
 
 }//}

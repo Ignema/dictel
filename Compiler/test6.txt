@@ -1,0 +1,26 @@
+add(factoriel, kind="function", (nb) => {
+    
+    add(f, 0)
+    add(i, 1, type="int")
+    
+    for(i = 1, i <= nb, i=i+1){
+        f = f * i
+    }
+    
+    return f
+        
+})
+
+add(main, kind="function", () => {
+
+    add(nb, type="int")
+    add(f)
+
+    log("Entrez un nombre pour calculer sa factorielle")
+    nb = scan()
+
+    f = factoriel(nb)
+    
+    log("Factorielle de ${nbr} = ${f}")
+        
+})
