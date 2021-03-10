@@ -82,9 +82,9 @@ char *Erreur[] = {
     "CRF_ERR",
     "EGSUP_ERR" ,
     "DEL_ERR",
-    "PAR_ERR"
+    "PAR_ERR",
+    "DEFLT_ERR"
     };
-
 
 void afficher_Erreur(ERREUR_TOKENS ERR)
 {

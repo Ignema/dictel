@@ -83,7 +83,8 @@ typedef enum
     CRF_ERR,
     EGSUP_ERR,
     DEL_ERR,
-    PAR_ERR
+    PAR_ERR,
+    DEFLT_ERR
 
 } ERREUR_TOKENS;
 

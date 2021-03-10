@@ -2,4 +2,11 @@ add(main,kind="function", () => {
     add(x,7,type="int",state="immutable")
     add(carre,kind="function",(x) => { return x*x },run="asynchron")
     log("le carre est : ${x}")
+
+    add(monSwitch, kind="when", (x) => {
+        1 -> monVariable = 1
+        2 -> monVariable = 2
+        3 -> monVariable = 3
+        _ -> monVariable = 0
+    })
 })

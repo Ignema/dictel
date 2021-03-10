@@ -9,7 +9,7 @@ char *TOKEN_CLE[]={"ID_TOKEN","NUM_TOKEN","ACF_TOKEN","ACO_TOKEN","VIR_TOKEN","P
                    "IMMUT_TOKEN","NONNULLABLE","NULLABLE_TOKEN","IF_TOKEN","FOR_TOKEN","WHEN_TOKEN","WHILE_TOKEN","STRUCT_TOKEN","USE_TOKEN",
                    "RUN_TOKEN","SYNC_TOKEN","ASYNC_TOKEN","SIZEOF_TOKEN","ALLOCAT_TOKEN","BREAK_TOKEN","FLECH_TOKEN","LOG_TOKEN","SCAN_TOKEN","DPNT_TOKEN",
                    "DBPNT_TOKEN","RETURN_TOKEN","PARAMS_TOKEN","PF_TOKEN","PO_TOKEN","ADD_TOKEN","ERREUR_TOKEN","EOF_TOKEN","FUNCTION_TOKEN",
-                   "STATE_TOKEN","CRO_TOKEN","CRF_TOKEN","GUI_TOKEN","KIND_TOKEN","DOLLAR_TOKEN","EGSUP_TOKEN","DEL_TOKEN"
+                   "STATE_TOKEN","CRO_TOKEN","CRF_TOKEN","GUI_TOKEN","KIND_TOKEN","DOLLAR_TOKEN","EGSUP_TOKEN","DEL_TOKEN","DEFLT_TOKEN"
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -293,6 +293,11 @@ void SYM_SUIV(){
             LIRE_CAR();
             //add_entry(&scanner.SYMB_COUR,&list);
             //////SYM_SUIV();
+            break;
+        case '_':
+            strcpy(scanner.SYMB_COUR.nom,"_");
+            scanner.SYMB_COUR.code=DEFLT_TOKEN;
+            LIRE_CAR();
             break;
         case 34:
             strcpy(scanner.SYMB_COUR.nom,"\"");

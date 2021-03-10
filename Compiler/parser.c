@@ -252,6 +252,14 @@ void SWITCHDEF()
 
     Test_Symbole(ACO_TOKEN, ACO_ERR);
     INSTS();
+    
+    /**< valeur par défaut */
+    if(token_courant.code == DEFLT_TOKEN){
+        Test_Symbole(DEFLT_TOKEN, DEFLT_ERR);
+        Test_Symbole(FLECH_TOKEN, FLECH_ERR);
+        AFFEC();
+    }
+
     Test_Symbole(ACF_TOKEN, ACF_ERR);
 }
 
