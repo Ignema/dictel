@@ -50,8 +50,9 @@ INST  => epsilon | WRITE | BLOCIF | BLOCFOR | BLOCWHILE | AFFEC | ADD |RETURN | 
 ----------------------------------------------------------
 WRITE  => log( " { {ID|symbole|chiffre} $ aco ID acf {ID|symbole|chiffre}  } " | ID )
 
-BLOCIF  => if ( CONDITION ) aco INSTS acf
+BLOCIF  => if ( CONDITION ) aco INSTS acf ELSE
 	=> CONDITION ? aco INSTS acf : aco INSTS acf
+ELSE    => epsilon | else aco INSTS acf
 AFFEC   => ID = READ
 READ => EXPR | scan()
 
