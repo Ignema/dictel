@@ -97,11 +97,9 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
             if(condition){
                 monVariable = monVariable + 1
             }
-            /*
             else {
                 monVariable = monVariable + 1
             }
-            */
         }
     }
 
