@@ -538,7 +538,7 @@ void READ()
         afficher_Erreur(READ_ERR);
 }
 
-/**< BLOCIF  => if ( CONDITION ) aco INSTS acf */
+/**< BLOCIF  => if ( CONDITION ) aco INSTS acf (else aco INSTS acf )*/
 void BLOCIF()
 {
     Test_Symbole(IF_TOKEN, IF_ERR);
@@ -549,6 +549,12 @@ void BLOCIF()
     Test_Symbole(ACO_TOKEN, ACO_ERR);
     INSTS();
     Test_Symbole(ACF_TOKEN, ACF_ERR);
+    if(token_courant.code == ELSE_TOKEN){
+        Test_Symbole(ELSE_TOKEN, ELSE_ERR);
+        Test_Symbole(ACO_TOKEN, ACO_ERR);
+        INSTS();
+        Test_Symbole(ACF_TOKEN, ACF_ERR);
+    }
 }
 
 /**< BLOCFOR ⇒ for (AFFEC , CONDITION , INST) aco INSTS acf */

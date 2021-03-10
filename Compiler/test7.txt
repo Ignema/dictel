@@ -12,10 +12,12 @@ add(main,kind="function", () => {
     
     while(x<5){
         for(i=0, i<6, i = i + 1){
-            if(i=3){
-                log(" milieu est 3")
+            if(i<3){
+                log("${i} inferieur est 3")
             }
-            log("la valeur de i est : ${i}")
+            else{
+                log("${i} superieur est 3")
+            }
         }
         x = x + 1
     }   

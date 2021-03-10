@@ -9,7 +9,7 @@ char *TOKEN_CLE[]={"ID_TOKEN","NUM_TOKEN","ACF_TOKEN","ACO_TOKEN","VIR_TOKEN","P
                    "IMMUT_TOKEN","NONNULLABLE","NULLABLE_TOKEN","IF_TOKEN","FOR_TOKEN","WHEN_TOKEN","WHILE_TOKEN","STRUCT_TOKEN","USE_TOKEN",
                    "RUN_TOKEN","SYNC_TOKEN","ASYNC_TOKEN","SIZEOF_TOKEN","ALLOCAT_TOKEN","BREAK_TOKEN","FLECH_TOKEN","LOG_TOKEN","SCAN_TOKEN","DPNT_TOKEN",
                    "DBPNT_TOKEN","RETURN_TOKEN","PARAMS_TOKEN","PF_TOKEN","PO_TOKEN","ADD_TOKEN","ERREUR_TOKEN","EOF_TOKEN","FUNCTION_TOKEN",
-                   "STATE_TOKEN","CRO_TOKEN","CRF_TOKEN","GUI_TOKEN","KIND_TOKEN","DOLLAR_TOKEN","EGSUP_TOKEN","DEL_TOKEN","DEFLT_TOKEN"
+                   "STATE_TOKEN","CRO_TOKEN","CRF_TOKEN","GUI_TOKEN","KIND_TOKEN","DOLLAR_TOKEN","EGSUP_TOKEN","DEL_TOKEN","DEFLT_TOKEN","ELSE_TOKEN"
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -175,6 +175,8 @@ void SYM_SUIV(){
         }else if(strcmp(scanner.SYMB_COUR.nom,"del")==0){
             scanner.SYMB_COUR.code=DEL_TOKEN;
             //SYM_SUIV();
+        }else if(strcmp(scanner.SYMB_COUR.nom,"else")==0){
+            scanner.SYMB_COUR.code=ELSE_TOKEN;
         }
         else{
             scanner.SYMB_COUR.code=ID_TOKEN;

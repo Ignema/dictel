@@ -84,7 +84,8 @@ typedef enum
     EGSUP_ERR,
     DEL_ERR,
     PAR_ERR,
-    DEFLT_ERR
+    DEFLT_ERR,
+    ELSE_ERR
 
 } ERREUR_TOKENS;
 
