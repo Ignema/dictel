@@ -119,7 +119,7 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
         1 -> monVariable = 1
         2 -> monVariable = 2
         3 -> monVariable = 3
-        _ -> monVariable = 0  // valeur par défaut  // avoir
+        _ -> monVariable = 0  // valeur par défaut 
     })
 
 #### Création d'une structure
@@ -176,4 +176,4 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
 3. EDDAGHAL Mohammed
 4. EL ARFAOUI Ikrame
 5. El AZHAR Asmaa
-6. FAKHORI Fouad
+6. EL FAKHORI Fouad
