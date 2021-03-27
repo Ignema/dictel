@@ -1,10 +1,10 @@
-# Projet Compilation: Création d'un nouvelle langage de programmation
+# Projet Compilation: Création d'un nouveau langage de programmation
 
 ## Dictel: portabilité élevée et programmation memory-driven
 
 ### Objectifs
 
-- Créer un langage qui brouille les frontiéres entre les variables et les fonctions et d'autres outils de codage en introduisant une structure unique qui stocke et suit tous les composants d'un programme.
+- Créer un langage qui brouille les frontières entre les variables et les fonctions et d'autres outils de codage en introduisant une structure unique qui stocke et suit tous les composants d'un programme.
 
 - Définir un cadre général qui peut améliorer la façon dont nous échangeons des algorithmes et des scripts en tirant parti d'un middleware que tout autre langage peut interpréter facilement.
 
@@ -22,35 +22,35 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
 
 ### Bouts de code
 
-#### Création d'un variable avec inference de type
+#### Création d'une variable avec inference de type
 
     add(monVariable, 45)
 
-#### Création d'un variable sans initialisation (null par defaut)
+#### Création d'une variable sans initialisation (null par defaut)
 
     add(monVariable)
 
-#### Création d'un variable pour une seul utilisation avant d'etre liberer
+#### Création d'une variable pour une seul utilisation avant d'etre liberer
 
     add(monVariable, 45, use=1)
 
-#### Création d'un variable avec un type specifique pour eviter l'inference du type
+#### Création d'une variable avec un type specifique pour eviter l'inference du type
 
     add(monVariable, 45, type="int")
 
-#### Création d'un variable avec un allocation dynamique(en octet)
+#### Création d'une variable avec une allocation dynamique(en octet)
 
     add(monVariable, allocate="5*sizeof(int)")
 
-#### Création d'un variable immutable(constante)
+#### Création d'une variable immutable(constante)
 
     add(monVariable, 45, state="immutable")
 
-#### Création d'un variable non-nullable(raise error if monVariable is null)
+#### Création d'une variable non-nullable(raise error if monVariable is null)
 
     add(monVariable, 45, state="nonNullable")
 
-#### Création d'un variable de type tableau
+#### Création d'une variable de type tableau
 
     add(monVariable, [45, 46, 47], type="int[]")
 
@@ -129,11 +129,11 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
         monComposant4 -> int[]
     })
 
-#### Modification d'un variable
+#### Modification d'une variable
 
     monVariable = 500
 
-#### Supprimer un variable de la mémoire
+#### Supprimer une variable de la mémoire
 
     del(monVariable)
 
