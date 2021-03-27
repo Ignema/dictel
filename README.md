@@ -8,7 +8,7 @@
 
 - Définir un cadre général qui peut améliorer la façon dont nous échangeons des algorithmes et des scripts en tirant parti d'un middleware que tout autre langage peut interpréter facilement.
 
-- Amélioration de la façon dont nous stockons les variables en mémoire en ajoutant de nouveaux paradigmes qui gèrent le *heap* et le *stack* d'une maniere plus efficace.
+- Amélioration de la façon dont nous stockons les variables en mémoire en ajoutant de nouveaux paradigmes qui gèrent le *heap* et le *stack* d'une manière plus efficace.
 
 - Mettre l'accent sur la réutilisabilité du code en mettant à niveau les blocs conditionnels et itératifs en pseudo-fonctions pouvant être appelées plusieurs fois.
 
@@ -24,46 +24,46 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
 
 #### Création d'une variable avec inference de type
 
-    add(monVariable, 45)
+    add(maVariable, 45)
 
 #### Création d'une variable sans initialisation (null par defaut)
 
-    add(monVariable)
+    add(maVariable)
 
 #### Création d'une variable pour une seul utilisation avant d'etre liberer
 
-    add(monVariable, 45, use=1)
+    add(maVariable, 45, use=1)
 
 #### Création d'une variable avec un type specifique pour eviter l'inference du type
 
-    add(monVariable, 45, type="int")
+    add(maVariable, 45, type="int")
 
 #### Création d'une variable avec une allocation dynamique(en octet)
 
-    add(monVariable, allocate="5*sizeof(int)")
+    add(maVariable, allocate="5*sizeof(int)")
 
 #### Création d'une variable immutable(constante)
 
-    add(monVariable, 45, state="immutable")
+    add(maVariable, 45, state="immutable")
 
 #### Création d'une variable non-nullable(raise error if monVariable is null)
 
-    add(monVariable, 45, state="nonNullable")
+    add(maVariable, 45, state="nonNullable")
 
 #### Création d'une variable de type tableau
 
-    add(monVariable, [45, 46, 47], type="int[]")
+    add(maVariable, [45, 46, 47], type="int[]")
 
 #### Création d'une fonction
 
-    add(maFonction, kind="function", (monVariable) => {
-        monVariable = monVariable + 1
+    add(maFonction, kind="function", (maVariable) => {
+        maVariable = maVariable + 1
     })
 
 #### Création d'une fonction asynchrone
 
-    add(maFonction, kind="function", (monVariable) => {
-        monVariable = monVariable + 1
+    add(maFonction, kind="function", (maVariable) => {
+        maVariable = maVariable + 1
     }, run="asynchron")
 
 #### Création d'un pipe
@@ -73,21 +73,21 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
 #### Création d'un bloc conditionnel
 
     add(monIf, kind="if", (condition) ? {
-        monVariable = monVariable + 1
+        maVariable = maVariable + 1
     } : {
-        monVariable = monVariable - 1
+        maVariable = maVariable - 1
     })
 
 #### Création d'un bloc itératif
 
     add(monFor, kind="for", (iterator) => {
-        monVariable = monVariable + 1
+        maVariable = maVariable + 1
     })
 
 #### Création d'un bloc itératif conditionnel
 
     add(monWhile, kind="while", (condition) => {
-        monVariable = monVariable + 1
+        maVariable = maVariable + 1
     })
 
 #### Remarque: On peut également utiliser le *for* et le *if* et le *while* traditionnel sans aucun problème
@@ -95,17 +95,17 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
     while(condition){
         for(i=0, i<6, i=i+1){
             if(condition){
-                monVariable = monVariable + 1
+                maVariable = maVariable + 1
             }
             else {
-                monVariable = monVariable + 1
+                maVariable = maVariable + 1
             }
         }
     }
 
 #### Opérateur ternaire
 
-    monVariable = true ? 1 : 0  // monVariable sera donc égale à 1
+    maVariable = true ? 1 : 0  // maVariable sera donc égale à 1
 
 #### Création d'un range (interval)
 
@@ -114,10 +114,10 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
 #### Création d'un switch
 
     add(monSwitch, kind="when", (monNombre) => {
-        1 -> monVariable = 1
-        2 -> monVariable = 2
-        3 -> monVariable = 3
-        _ -> monVariable = 0  // valeur par défaut 
+        1 -> maVariable = 1
+        2 -> maVariable = 2
+        3 -> maVariable = 3
+        _ -> maVariable = 0  // valeur par défaut 
     })
 
 #### Création d'une structure
@@ -131,15 +131,15 @@ De nombreux langages de programmation sont conçus d'une manière standard qui p
 
 #### Modification d'une variable
 
-    monVariable = 500
+    maVariable = 500
 
 #### Supprimer une variable de la mémoire
 
-    del(monVariable)
+    del(maVariable)
 
 #### Voir les paramètres d'une variable
 
-    params(monVariable) // type, memoire, TTL, etc.
+    params(maVariable) // type, memoire, TTL, etc.
 
 #### Afficher du texte sur la console
 
