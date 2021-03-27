@@ -1,4 +1,0 @@
-program test_write_natural
-begin
-    write(28)
-end
